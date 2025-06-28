@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: screener
+
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/screener"
+    username: "screener"
+    password: "password"

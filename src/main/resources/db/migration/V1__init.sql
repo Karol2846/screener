@@ -8,24 +8,23 @@ updated_at          TIMESTAMP WITH TIME ZONE NOT NULL
 
 CREATE TABLE price_history (
 id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol              VARCHAR(20)             NOT NULL REFERENCES stock(symbol) ON DELETE CASCADE,
-date                DATE            NOT NULL,
+symbol              VARCHAR(20)             NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 current_price       DECIMAL(12,4),
 average_50_price    DECIMAL(12,4),
 average_200_price   DECIMAL(12,4),
 created_at          TIMESTAMP WITH TIME ZONE NOT NULL,
 
-UNIQUE(symbol, date)
+UNIQUE(symbol, created_at)
 );
 
 CREATE TABLE fundamental_data (
 id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol              VARCHAR(20) NOT NULL REFERENCES stock(symbol) ON DELETE CASCADE,
+symbol              VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 
 market_cap          BIGINT,
 ebitda              BIGINT,
 revenue             BIGINT,
-ev                  BIGINT, -- enterprise value (calculated: evToEbitda * ebitda)
+enterprise_value    BIGINT, -- (calculated: evToEbitda * ebitda)
 
 pe_ratio            DECIMAL(8,2),
 peg_ratio           DECIMAL(8,2),
@@ -40,9 +39,9 @@ created_at          TIMESTAMP WITH TIME ZONE NOT NULL,
 UNIQUE(symbol, created_at)
 );
 
-CREATE TABLE analyst_recommendations (
+CREATE TABLE analyst_recommendation (
 id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol              VARCHAR(20) NOT NULL REFERENCES stock(symbol) ON DELETE CASCADE,
+symbol              VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 
 strong_buy          INTEGER DEFAULT 0,
 buy                 INTEGER DEFAULT 0,
@@ -55,10 +54,10 @@ UNIQUE(symbol, created_at)
 );
 
 -- indexes
-CREATE INDEX idx_price_history_symbol_date ON price_history(symbol, date DESC);
-CREATE INDEX idx_price_history_date ON price_history(date DESC);
+CREATE INDEX idx_price_history_symbol_date ON price_history(symbol, created_at DESC);
+CREATE INDEX idx_price_history_date ON price_history(created_at DESC);
 
 CREATE INDEX idx_fundamental_data_symbol_date ON fundamental_data(symbol, created_at DESC);
 CREATE INDEX idx_fundamental_data_date ON fundamental_data(created_at DESC);
 
-CREATE INDEX idx_analyst_recommendations_symbol_date ON analyst_recommendations(symbol, created_at DESC);
+CREATE INDEX idx_analyst_recommendation_symbol_date ON analyst_recommendation(symbol, created_at DESC);

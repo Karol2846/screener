@@ -1,4 +1,4 @@
-package com.stock.screener.adapter.web.in.model.moving_average;
+package com.stock.screener.adapter.web.seeking.alpha.model.moving_average;
 
 import java.util.List;
 

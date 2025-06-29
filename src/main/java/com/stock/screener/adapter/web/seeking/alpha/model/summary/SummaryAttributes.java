@@ -1,4 +1,4 @@
-package com.stock.screener.adapter.web.in.model.summary;
+package com.stock.screener.adapter.web.seeking.alpha.model.summary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -35,7 +35,7 @@ public class Stock {
     // później stworzenie modelu DTOs i mapperów
 
     // DOCS: pobranie wszystkich firm
-    //  https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_0b9a23fa-b712-4efe-bf5b-217148378179
+    //  ten sam endpoint co get summary (financial-data)
 
     @Id
     private String symbol;

@@ -41,7 +41,7 @@ public class PriceHistory {
     @Column(insertable = false, updatable = false)
     private String symbol;
 
-    private BigDecimal currentPrice;
+    private BigDecimal currentPrice; // (pc - previous close price)
 
     @Column(name = "average_50_price", precision = 12, scale = 4)
     private BigDecimal average50Price;

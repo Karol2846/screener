@@ -61,7 +61,7 @@ public class AnalystRecommendation {
                 (strongSell != null ? strongSell : 0);
     }
 
-    public BigDecimal getBullishRatio() {
+    public BigDecimal bullishRatio() {
         int total = getTotalRecommendations();
         if (total == 0) return BigDecimal.ZERO;
 

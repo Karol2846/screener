@@ -43,8 +43,8 @@ public class FundamentalData {
     private BigDecimal pegRatio;
     private BigDecimal pbRatio;
     private BigDecimal peForward;
-    private BigDecimal evToEbitda;
-    private BigDecimal evToSales;
+    private BigDecimal evEbitda;
+    private BigDecimal evSales;
 
     // Prognozy i cele
     //DOCS: wszystko price target: https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_cb5cc243-13ed-4ebf-93bc-c93ee5076b6d
@@ -62,16 +62,16 @@ public class FundamentalData {
     private Stock stock;
 
     public Long ebitda() {
-        if(evToEbitda == null || enterpriseValue == null) {
-            throw new DomainException("EBITDA cannot be calculated: evToEbitda or enterpriseValue is null");
+        if(evEbitda == null || enterpriseValue == null) {
+            throw new DomainException("EBITDA cannot be calculated: evEbitda or enterpriseValue is null");
         }
-        return Math.divideExact(enterpriseValue, evToEbitda.longValue());
+        return Math.divideExact(enterpriseValue, evEbitda.longValue());
     }
 
     public Long revenue() {
-        if(evToSales == null || enterpriseValue == null) {
-            throw new DomainException("REVENUE cannot be calculated: evToSales or enterpriseValue is null");
+        if(evSales == null || enterpriseValue == null) {
+            throw new DomainException("REVENUE cannot be calculated: evSales or enterpriseValue is null");
         }
-        return Math.divideExact(enterpriseValue, evToSales.longValue());
+        return Math.divideExact(enterpriseValue, evSales.longValue());
     }
 }

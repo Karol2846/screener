@@ -23,14 +23,14 @@ id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 
 market_cap                  BIGINT,
-enterprise_value            BIGINT, -- (calculated: evToEbitda * ebitda)
+enterprise_value            BIGINT, -- (calculated: evEbitda * ebitda)
 
 pe_ratio                    DECIMAL(8,2),
 pb_ratio                    DECIMAL(8,2),
 peg_ratio                   DECIMAL(8,2),
 pe_forward                  DECIMAL(8,2),
-ev_to_ebitda                DECIMAL(8,2),
-ev_to_sales                 DECIMAL(8,2),
+ev_ebitda                DECIMAL(8,2),
+ev_sales                 DECIMAL(8,2),
 
 price_target_high       DECIMAL(12,4),
 price_target_low        DECIMAL(12,4),

@@ -11,10 +11,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -26,8 +27,12 @@ import static java.math.RoundingMode.HALF_UP;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(fluent = true, chain = true)
 @Table(name = "analyst_recommendation")
 public class AnalystRecommendation {
+
+    //DOCS: dane z endpointu:
+    // https://finnhub.io/api/v1/stock/recommendation?symbol=TSLA&token=d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig
 
     @Id
     private UUID id;
@@ -42,7 +47,7 @@ public class AnalystRecommendation {
     private Integer strongSell;
 
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private LocalDate createdAt;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "symbol", referencedColumnName = "symbol")

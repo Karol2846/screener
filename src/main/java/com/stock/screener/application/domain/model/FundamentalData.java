@@ -1,5 +1,6 @@
 package com.stock.screener.application.domain.model;
 
+import com.stock.screener.application.exception.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,10 +13,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +26,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(fluent = true, chain = true)
 @Table(name = "fundamental_data")
 public class FundamentalData {
 
@@ -34,32 +37,41 @@ public class FundamentalData {
     private String symbol;
 
     private Long marketCap;
-    private Long ebitda;
-    private Long revenue;
-    private Long enterpriseValue;
+    private Long enterpriseValue;        // (totalEnterprise)
 
-    // wskaźniki wyceny
     private BigDecimal peRatio;
     private BigDecimal pegRatio;
+    private BigDecimal pbRatio;
     private BigDecimal peForward;
     private BigDecimal evToEbitda;
-    private BigDecimal psForward;
+    private BigDecimal evToSales;
 
     // Prognozy i cele
-    private BigDecimal priceTarget;
-    private BigDecimal eps;
+    //DOCS: wszystko price target: https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_cb5cc243-13ed-4ebf-93bc-c93ee5076b6d
+    private BigDecimal priceTargetConsensus;
+    private BigDecimal priceTargetHigh;
+    private BigDecimal priceTargetLow;
+
+    private BigDecimal eps;                 //(estimateEps)
 
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private LocalDate createdAt;
 
-    // Relacja
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "symbol")
     private Stock stock;
 
-    public void calculateEv() {
-        if (evToEbitda != null && ebitda != null) {
-            this.enterpriseValue = evToEbitda.multiply(new BigDecimal(ebitda)).longValue();
+    public Long ebitda() {
+        if(evToEbitda == null || enterpriseValue == null) {
+            throw new DomainException("EBITDA cannot be calculated: evToEbitda or enterpriseValue is null");
         }
+        return Math.divideExact(enterpriseValue, evToEbitda.longValue());
+    }
+
+    public Long revenue() {
+        if(evToSales == null || enterpriseValue == null) {
+            throw new DomainException("REVENUE cannot be calculated: evToSales or enterpriseValue is null");
+        }
+        return Math.divideExact(enterpriseValue, evToSales.longValue());
     }
 }

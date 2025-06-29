@@ -1,41 +1,43 @@
 CREATE TABLE stock (
-symbol              VARCHAR(20) PRIMARY KEY,
-company_name        VARCHAR(255),
-sector              VARCHAR(100),
-created_at          TIMESTAMP WITH TIME ZONE NOT NULL,
-updated_at          TIMESTAMP WITH TIME ZONE NOT NULL
+symbol                      VARCHAR(20) PRIMARY KEY NOT NULL,
+seeking_alpha_tracker_id    BIGINT NOT NULL,
+company_name                VARCHAR(255) NOT NULL,
+sector                      VARCHAR(100) NOT NULL,
+created_at                  DATE NOT NULL,
+updated_at                  TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE price_history (
-id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol              VARCHAR(20)             NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
-current_price       DECIMAL(12,4),
-average_50_price    DECIMAL(12,4),
-average_200_price   DECIMAL(12,4),
-created_at          TIMESTAMP WITH TIME ZONE NOT NULL,
+id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
+current_price               DECIMAL(12,4) NOT NULL,
+average_50_price            DECIMAL(12,4),
+average_200_price           DECIMAL(12,4),
+created_at                  DATE NOT NULL,
 
 UNIQUE(symbol, created_at)
 );
 
 CREATE TABLE fundamental_data (
-id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol              VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
+id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 
-market_cap          BIGINT,
-ebitda              BIGINT,
-revenue             BIGINT,
-enterprise_value    BIGINT, -- (calculated: evToEbitda * ebitda)
+market_cap                  BIGINT,
+enterprise_value            BIGINT, -- (calculated: evToEbitda * ebitda)
 
-pe_ratio            DECIMAL(8,2),
-peg_ratio           DECIMAL(8,2),
-pe_forward          DECIMAL(8,2),
-ev_to_ebitda        DECIMAL(8,2),
-ps_forward          DECIMAL(8,2), -- calculated: marketCap / revenue_forward
+pe_ratio                    DECIMAL(8,2),
+pb_ratio                    DECIMAL(8,2),
+peg_ratio                   DECIMAL(8,2),
+pe_forward                  DECIMAL(8,2),
+ev_to_ebitda                DECIMAL(8,2),
+ev_to_sales                 DECIMAL(8,2),
 
-price_target        DECIMAL(12,4),
-eps                 DECIMAL(8,4),
+price_target_high       DECIMAL(12,4),
+price_target_low        DECIMAL(12,4),
+price_target_consensus  DECIMAL(12,4),
+eps                     DECIMAL(8,4),
 
-created_at          TIMESTAMP WITH TIME ZONE NOT NULL,
+created_at          DATE NOT NULL,
 UNIQUE(symbol, created_at)
 );
 
@@ -49,7 +51,7 @@ hold                INTEGER DEFAULT 0,
 sell                INTEGER DEFAULT 0,
 strong_sell         INTEGER DEFAULT 0,
 
-created_at          TIMESTAMP WITH TIME ZONE NOT NULL,
+created_at          DATE NOT NULL,
 UNIQUE(symbol, created_at)
 );
 

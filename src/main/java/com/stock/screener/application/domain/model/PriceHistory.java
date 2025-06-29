@@ -11,14 +11,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static jakarta.persistence.FetchType.LAZY;
+import static java.math.RoundingMode.HALF_UP;
 
 @Entity
 @Getter
@@ -26,8 +27,13 @@ import static jakarta.persistence.FetchType.LAZY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(fluent = true, chain = true)
 @Table(name = "price_history")
 public class PriceHistory {
+
+    //DOCS
+    // price dla każdej firmy osobno: https://finnhub.io/api/v1/quote?symbol=AAPL&token=d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig
+    // moving averages dla wszystkich firm na raz: https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_3ebb08a0-39fd-4b3f-ad28-faca7a9fdfab
 
     @Id
     private UUID id;
@@ -44,20 +50,30 @@ public class PriceHistory {
     private BigDecimal average200Price;
 
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private LocalDate createdAt;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "symbol", referencedColumnName = "symbol")
     private Stock stock;
 
-    public BigDecimal calculateUpside(BigDecimal priceTarget) {
+    public BigDecimal upside(BigDecimal priceTarget) {
         if (currentPrice == null || priceTarget == null ||
                 currentPrice.compareTo(BigDecimal.ZERO) <= 0) {
             return null;
         }
 
         return priceTarget.subtract(currentPrice)
-                .divide(currentPrice, 4, RoundingMode.HALF_UP)
+                .divide(currentPrice, 4, HALF_UP)
                 .multiply(new BigDecimal("100"));
+    }
+
+    public BigDecimal psForward(BigDecimal eps) {
+        if (currentPrice == null || eps == null ||
+                currentPrice.compareTo(BigDecimal.ZERO) <= 0 ||
+                eps.compareTo(BigDecimal.ZERO) <= 0) {
+            return null;
+        }
+
+        return currentPrice.divide(eps, 4, HALF_UP);
     }
 }

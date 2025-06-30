@@ -45,6 +45,7 @@ public class AnalystRecommendation {
     private Integer hold;
     private Integer sell;
     private Integer strongSell;
+    private Integer total;
 
     @CreatedDate
     private LocalDate createdAt;

@@ -50,6 +50,7 @@ buy                 INTEGER DEFAULT 0,
 hold                INTEGER DEFAULT 0,
 sell                INTEGER DEFAULT 0,
 strong_sell         INTEGER DEFAULT 0,
+total         INTEGER DEFAULT 0,
 
 created_at          DATE NOT NULL,
 UNIQUE(symbol, created_at)

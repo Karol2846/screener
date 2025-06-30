@@ -1,0 +1,14 @@
+package com.stock.screener.adapter.web.seeking.alpha.model.analyst_recomendation;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.stock.screener.adapter.web.seeking.alpha.model.SingleTickerDeserializer;
+
+import java.util.Map;
+
+public record AnalystRecommendationResponse(
+        Map<String, Object> revisions,
+
+        @JsonDeserialize(using = SingleTickerDeserializer.class)
+        AnalystRecommendationsData estimates
+) {
+}

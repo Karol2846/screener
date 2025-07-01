@@ -11,3 +11,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+seeking-alpha:
+  api-key: ${SEEKING_ALPHA_TOKEN:da27500578mshf0ed54b9bfb3bf8p112af1jsn9f03cc02018c}
+  api-host: seeking-alpha.p.rapidapi.com
+  base-url: https://seeking-alpha.p.rapidapi.com/symbols
+
+finhub:
+  api-key: ${FINHUB_TOKEN:d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig}
+  base-url: https://finnhub.io/api/v1/quote

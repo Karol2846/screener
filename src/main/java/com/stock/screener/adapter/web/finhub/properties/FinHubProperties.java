@@ -1,4 +1,4 @@
-package com.stock.screener.adapter.web.seeking.alpha.properties;
+package com.stock.screener.adapter.web.finhub.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

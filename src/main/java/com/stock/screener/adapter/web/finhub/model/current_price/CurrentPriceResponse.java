@@ -1,4 +1,4 @@
-package com.stock.screener.adapter.web.seeking.alpha.model.current_price;
+package com.stock.screener.adapter.web.finhub.model.current_price;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

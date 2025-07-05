@@ -1,5 +1,6 @@
 package com.stock.screener.adapter.web.seeking.alpha.client;
 
+import com.stock.screener.adapter.web.seeking.alpha.model.analyst_recomendation.AnalystRecommendationResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageRespnse;
 import com.stock.screener.adapter.web.seeking.alpha.model.price_target.PriceTargetResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.summary.SummaryResponse;
@@ -56,6 +57,17 @@ public class SeekingAlphaClient {
                 .uri("/get-analyst-price-target?ticker_ids={tickers}&group_by_month={groupByMonth}", tickers, properties.groupByMonth())
                 .retrieve()
                 .bodyToMono(PriceTargetResponse.class)
+                .block();
+    }
+
+    public AnalystRecommendationResponse getAnalystRecommendation(String tickers) {
+
+        log.info("Fetching analyst recommendation for tickers: [{}]", tickers);
+
+        return seekingAlphaWebClient.get()
+                .uri("/get-analyst-recommendations?ticker_ids={tickers}&group_by_month={groupByMonth}", tickers, properties.groupByMonth())
+                .retrieve()
+                .bodyToMono(AnalystRecommendationResponse.class)
                 .block();
     }
 }

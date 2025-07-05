@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record SummaryAttributes(
         BigDecimal cash,
-        @JsonProperty("chgp1y") BigDecimal percentChange1Year,
         @JsonProperty("chgp3m") BigDecimal percentChange3Months,
         @JsonProperty("chgp6m") BigDecimal percentChange6Months,
         @JsonProperty("chgp9m") BigDecimal percentChange9Months,
+        @JsonProperty("chgp1y") BigDecimal percentChange12Months,
         String companyName,
         BigDecimal estimateEps,
         BigDecimal evEbitda,
@@ -22,6 +22,4 @@ public record SummaryAttributes(
         @JsonProperty("priceBook") BigDecimal pb,
         String sectorname,
         @JsonProperty("totalEnterprise") BigDecimal enterpriseValue
-) {
-
-}
+) { }

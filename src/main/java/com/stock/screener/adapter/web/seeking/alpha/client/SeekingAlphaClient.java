@@ -1,7 +1,7 @@
 package com.stock.screener.adapter.web.seeking.alpha.client;
 
 import com.stock.screener.adapter.web.seeking.alpha.model.analyst_recomendation.AnalystRecommendationResponse;
-import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageRespnse;
+import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.price_target.PriceTargetResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.summary.SummaryResponse;
 import com.stock.screener.adapter.web.seeking.alpha.properties.SeekingAlphaProperties;
@@ -20,12 +20,6 @@ public class SeekingAlphaClient {
 
 
     public SummaryResponse getSummary(String symbols) {
-        // FIXME: validation should be applied, but not here
-//        if (symbols.split(",").length > seekingAlphaProperties.maxListSize()) {
-//            throw new ListSizeExceededException("The number of symbols exceeds the maximum allowed size of " +
-//                    seekingAlphaProperties.maxListSize());
-//        }
-
         log.info("Fetching summary for symbols: [{}]", symbols);
 
         return seekingAlphaWebClient.get()
@@ -35,7 +29,7 @@ public class SeekingAlphaClient {
                 .block();
     }
 
-    public MovingAverageRespnse getMovingAverage(String symbols) {
+    public MovingAverageResponse getMovingAverage(String symbols) {
         log.info("Fetching moving average for symbols: [{}]", symbols);
 
         String fields = String.join(",", properties.momentumFields());
@@ -45,7 +39,7 @@ public class SeekingAlphaClient {
         return seekingAlphaWebClient.get()
                 .uri("/v2/get-momentum?symbols={symbols}&fields={fields}", symbols, fields)
                 .retrieve()
-                .bodyToMono(MovingAverageRespnse.class)
+                .bodyToMono(MovingAverageResponse.class)
                 .block();
     }
 

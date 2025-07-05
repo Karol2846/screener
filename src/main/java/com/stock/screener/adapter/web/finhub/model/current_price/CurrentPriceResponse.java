@@ -11,6 +11,6 @@ public record CurrentPriceResponse(
         @JsonProperty("h") BigDecimal dayHighPrice,
         @JsonProperty("l") BigDecimal dayLowPrice,
         @JsonProperty("o") BigDecimal openPrice,
-        @JsonProperty("pc") BigDecimal previousCloseProce,
+        @JsonProperty("pc") BigDecimal previousClosePrice,
         @JsonProperty("t") BigDecimal t
 ) {}

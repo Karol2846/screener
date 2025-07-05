@@ -10,5 +10,6 @@ public record SeekingAlphaProperties(
         String apiHost,
         String baseUrl,
         int maxListSize,
-        List<String> momentumFields) {
+        List<String> momentumFields,
+        boolean groupByMonth) {
 }

@@ -1,6 +1,7 @@
 package com.stock.screener.adapter.web.seeking.alpha.client;
 
 import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageRespnse;
+import com.stock.screener.adapter.web.seeking.alpha.model.price_target.PriceTargetResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.summary.SummaryResponse;
 import com.stock.screener.adapter.web.seeking.alpha.properties.SeekingAlphaProperties;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class SeekingAlphaClient {
 
     private final WebClient seekingAlphaWebClient;
-    private final SeekingAlphaProperties seekingAlphaProperties;
+    private final SeekingAlphaProperties properties;
 
 
     public SummaryResponse getSummary(String symbols) {
@@ -36,7 +37,7 @@ public class SeekingAlphaClient {
     public MovingAverageRespnse getMovingAverage(String symbols) {
         log.info("Fetching moving average for symbols: [{}]", symbols);
 
-        String fields = String.join(",", seekingAlphaProperties.momentumFields());
+        String fields = String.join(",", properties.momentumFields());
 
         log.info("Fields from properties: [{}]", fields);
 
@@ -44,6 +45,17 @@ public class SeekingAlphaClient {
                 .uri("/v2/get-momentum?symbols={symbols}&fields={fields}", symbols, fields)
                 .retrieve()
                 .bodyToMono(MovingAverageRespnse.class)
+                .block();
+    }
+
+    public PriceTargetResponse getPriceTarget(String tickers) {
+
+        log.info("Fetching price target for tickers: [{}]", tickers);
+
+        return seekingAlphaWebClient.get()
+                .uri("/get-analyst-price-target?ticker_ids={tickers}&group_by_month={groupByMonth}", tickers, properties.groupByMonth())
+                .retrieve()
+                .bodyToMono(PriceTargetResponse.class)
                 .block();
     }
 }

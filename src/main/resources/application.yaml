@@ -17,6 +17,7 @@ seeking-alpha:
   api-host: seeking-alpha.p.rapidapi.com
   base-url: https://seeking-alpha.p.rapidapi.com/symbols
   max-list-size: 4
+  group-by-month: true
   momentum-fields:
     - movAvg50d
     - movAvg100d

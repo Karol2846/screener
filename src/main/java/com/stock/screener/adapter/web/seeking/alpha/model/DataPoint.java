@@ -2,15 +2,9 @@ package com.stock.screener.adapter.web.seeking.alpha.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public record DataPoint(
         @JsonProperty("effectivedate") String effectiveDate,
-        @JsonProperty("dataitemvalue") String dataItemValue
-) {
-    public Double getValueAsDouble() {
-        return dataItemValue != null ? Double.parseDouble(dataItemValue) : null;
-    }
-
-    public Integer getValueAsInt() {
-        return dataItemValue != null ? Integer.parseInt(dataItemValue) : null;
-    }
-}
+        @JsonProperty("dataitemvalue") BigDecimal dataItemValue
+) {}

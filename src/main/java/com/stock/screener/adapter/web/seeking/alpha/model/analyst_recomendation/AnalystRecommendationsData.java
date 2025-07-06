@@ -28,8 +28,4 @@ public record AnalystRecommendationsData(
     public Integer latestBuy() {
         return buy != null ? buy.getLatest().dataItemValue().intValue() : null;
     }
-
-    public Integer latestTotal() {
-        return latestUnderperform() + latestOutperform() + latestHold() + latestSell() + latestBuy();
-    }
 }

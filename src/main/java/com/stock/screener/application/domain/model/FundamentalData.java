@@ -1,6 +1,5 @@
 package com.stock.screener.application.domain.model;
 
-import com.stock.screener.application.exception.DomainException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,12 +13,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Slf4j
 @Entity
 @Getter
 @Setter
@@ -37,22 +38,22 @@ public class FundamentalData {
     private String symbol;
 
     private Long marketCap;
-    private Long enterpriseValue;        // (totalEnterprise)
+    private Long enterpriseValue;
+    private Long ebitda;
+    private BigDecimal eps;
+    private BigDecimal forwardEps3Y;
 
     private BigDecimal peRatio;
-    private BigDecimal pegRatio;
+    private BigDecimal pegForward;
     private BigDecimal pbRatio;
     private BigDecimal peForward;
     private BigDecimal evEbitda;
     private BigDecimal evSales;
 
-    // Prognozy i cele
-    //DOCS: wszystko price target: https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_cb5cc243-13ed-4ebf-93bc-c93ee5076b6d
     private BigDecimal priceTargetConsensus;
     private BigDecimal priceTargetHigh;
     private BigDecimal priceTargetLow;
 
-    private BigDecimal eps;                 //(estimateEps)
 
     @CreatedDate
     private LocalDate createdAt;
@@ -62,15 +63,17 @@ public class FundamentalData {
     private Stock stock;
 
     public Long ebitda() {
-        if(evEbitda == null || enterpriseValue == null) {
-            throw new DomainException("EBITDA cannot be calculated: evEbitda or enterpriseValue is null");
+        if (evEbitda == null || enterpriseValue == null) {
+            log.debug("evEbitda or enterpriseValue is null, ebitda set as null");
+            return null;
         }
         return Math.divideExact(enterpriseValue, evEbitda.longValue());
     }
 
     public Long revenue() {
-        if(evSales == null || enterpriseValue == null) {
-            throw new DomainException("REVENUE cannot be calculated: evSales or enterpriseValue is null");
+        if (evSales == null || enterpriseValue == null) {
+            log.debug("evSales or enterpriseValue is null, revenue set as null");
+            return null;
         }
         return Math.divideExact(enterpriseValue, evSales.longValue());
     }

@@ -31,9 +31,6 @@ import static java.math.RoundingMode.HALF_UP;
 @Table(name = "analyst_recommendation")
 public class AnalystRecommendation {
 
-    //DOCS: dane z endpointu:
-    // https://finnhub.io/api/v1/stock/recommendation?symbol=TSLA&token=d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig
-
     @Id
     private UUID id;
 
@@ -45,7 +42,6 @@ public class AnalystRecommendation {
     private Integer hold;
     private Integer sell;
     private Integer strongSell;
-    private Integer total;
 
     @CreatedDate
     private LocalDate createdAt;
@@ -54,7 +50,7 @@ public class AnalystRecommendation {
     @JoinColumn(name = "symbol", referencedColumnName = "symbol")
     private Stock stock;
 
-    public Integer getTotalRecommendations() {
+    public Integer total() {
         return (strongBuy != null ? strongBuy : 0) +
                 (buy != null ? buy : 0) +
                 (hold != null ? hold : 0) +
@@ -63,7 +59,7 @@ public class AnalystRecommendation {
     }
 
     public BigDecimal bullishRatio() {
-        int total = getTotalRecommendations();
+        int total = total();
         if (total == 0) return BigDecimal.ZERO;
 
         int bullish = (strongBuy != null ? strongBuy : 0) + (buy != null ? buy : 0);

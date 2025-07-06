@@ -46,6 +46,9 @@ public class PriceHistory {
     @Column(name = "average_50_price", precision = 12, scale = 4)
     private BigDecimal average50Price;
 
+    @Column(name = "average_100_price", precision = 12, scale = 4)
+    private BigDecimal average100Price;
+
     @Column(name = "average_200_price", precision = 12, scale = 4)
     private BigDecimal average200Price;
 

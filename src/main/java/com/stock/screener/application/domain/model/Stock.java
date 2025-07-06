@@ -30,12 +30,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @Accessors(fluent = true, chain = true)
 @Table(name = "stock")
 public class Stock {
-    //DOCS: kolejny krok to tworzenie połączenia z YH Finance API
-    // i koknfiguracja WebClient-a
-    // później stworzenie modelu DTOs i mapperów
-
-    // DOCS: pobranie wszystkich firm
-    //  ten sam endpoint co get summary (financial-data)
 
     @Id
     private String symbol;

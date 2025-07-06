@@ -16,10 +16,11 @@ public record SummaryAttributes(
         BigDecimal estimateEps,
         BigDecimal evEbitda,
         BigDecimal evSales,
-        @JsonProperty("lastClosePriceEarningsRatio") BigDecimal pe,
+        BigDecimal lastClosePriceEarningsRatio,
         BigDecimal marketCap,
-        @JsonProperty("peRatioFwd") BigDecimal peForward,
-        @JsonProperty("priceBook") BigDecimal pb,
+        BigDecimal peRatioFwd,
+        BigDecimal priceBook,
         String sectorname,
-        @JsonProperty("totalEnterprise") BigDecimal enterpriseValue
+        BigDecimal totalEnterprise,
+        BigDecimal dilutedEpsGrowth
 ) { }

@@ -14,10 +14,5 @@ public record StockSummaryCommand(String ticker,
                                   BigDecimal evEbitda,
                                   BigDecimal evSales,
                                   BigDecimal eps,
-
-                                  // TODO: maybe add those fields to FundamentalData?
-                                  BigDecimal percentChange3Months,
-                                  BigDecimal percentChange6Months,
-                                  BigDecimal percentChange9Months,
-                                  BigDecimal percentChange12Months
-) {}
+                                  BigDecimal forwardEps3Y
+) { }

@@ -5,5 +5,5 @@ import java.util.Map;
 public record AnalystRecommendationResponse(
         Map<String, Object> revisions,
 
-        Map<String, AnalystRecommendationsData> estimates
+        Map<Integer, AnalystRecommendationsData> estimates
 ) {}

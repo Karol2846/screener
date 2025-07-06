@@ -1,7 +1,10 @@
 package com.stock.screener.application.port.command;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 
+@Builder
 public record StockSummaryCommand(String ticker,
                                   Integer tickerId,
                                   String companyName,

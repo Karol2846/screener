@@ -5,5 +5,5 @@ import java.util.Map;
 public record PriceTargetResponse(
         Map<String, Object> revisions,
 
-        Map<String, PriceTargetData> estimates
+        Map<Integer, PriceTargetData> estimates
 ) {}

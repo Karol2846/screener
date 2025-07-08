@@ -33,7 +33,7 @@ public class Stock {
 
     @Id
     private String symbol;
-    private Long seekingAlphaTrackerId;
+    private Integer seekingAlphaTrackerId;
     private String companyName;
     private String sector;
 

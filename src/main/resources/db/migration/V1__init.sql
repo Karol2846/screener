@@ -1,6 +1,6 @@
 CREATE TABLE stock (
 symbol                      VARCHAR(20) PRIMARY KEY NOT NULL,
-seeking_alpha_tracker_id    BIGINT NOT NULL,
+seeking_alpha_tracker_id    INT NOT NULL,
 company_name                VARCHAR(255) NOT NULL,
 sector                      VARCHAR(100) NOT NULL,
 created_at                  DATE NOT NULL,
@@ -8,8 +8,7 @@ updated_at                  TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE price_history (
-id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
+symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
 current_price               DECIMAL(12,4) NOT NULL,
 average_50_price            DECIMAL(12,4),
 average_100_price           DECIMAL(12,4),
@@ -20,12 +19,10 @@ UNIQUE(symbol, created_at)
 );
 
 CREATE TABLE fundamental_data (
-id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
+symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
 
 market_cap                  BIGINT,
 enterprise_value            BIGINT,
-ebitda                      BIGINT,
 eps                         DECIMAL(8,4),
 forward_eps3y               DECIMAL(8,4),
 
@@ -45,8 +42,7 @@ UNIQUE(symbol, created_at)
 );
 
 CREATE TABLE analyst_recommendation (
-id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
+symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
 
 strong_buy                  INTEGER DEFAULT 0,
 buy                         INTEGER DEFAULT 0,

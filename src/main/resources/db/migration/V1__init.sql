@@ -9,10 +9,10 @@ updated_at                  TIMESTAMP WITH TIME ZONE NOT NULL
 
 CREATE TABLE price_history (
 symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
-current_price               DECIMAL(12,4) NOT NULL,
-average_50_price            DECIMAL(12,4),
-average_100_price           DECIMAL(12,4),
-average_200_price           DECIMAL(12,4),
+current_price               DECIMAL(8,2) NOT NULL,
+average_50_price            DECIMAL(8,2),
+average_100_price           DECIMAL(8,2),
+average_200_price           DECIMAL(8,2),
 created_at                  DATE NOT NULL,
 
 UNIQUE(symbol, created_at)
@@ -23,6 +23,8 @@ symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON
 
 market_cap                  BIGINT,
 enterprise_value            BIGINT,
+ebitda                      BIGINT,
+revenue                     BIGINT,
 eps                         DECIMAL(8,4),
 forward_eps3y               DECIMAL(8,4),
 
@@ -33,9 +35,9 @@ pe_forward                  DECIMAL(8,2),
 ev_ebitda                   DECIMAL(8,2),
 ev_sales                    DECIMAL(8,2),
 
-price_target_high           DECIMAL(12,4),
-price_target_low            DECIMAL(12,4),
-price_target_consensus      DECIMAL(12,4),
+price_target_high           DECIMAL(8,2),
+price_target_low            DECIMAL(8,2),
+price_target_consensus      DECIMAL(8,2),
 
 created_at                  DATE NOT NULL,
 UNIQUE(symbol, created_at)

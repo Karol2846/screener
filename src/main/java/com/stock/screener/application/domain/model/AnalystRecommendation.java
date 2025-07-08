@@ -32,8 +32,6 @@ import static java.math.RoundingMode.HALF_UP;
 public class AnalystRecommendation {
 
     @Id
-    private UUID id;
-
     @Column(insertable = false, updatable = false)
     private String symbol;
 

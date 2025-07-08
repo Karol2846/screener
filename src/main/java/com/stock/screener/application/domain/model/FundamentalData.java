@@ -17,8 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Slf4j
 @Entity
@@ -32,14 +32,13 @@ import java.util.UUID;
 public class FundamentalData {
 
     @Id
-    private UUID id;
-
     @Column(insertable = false, updatable = false)
     private String symbol;
 
     private Long marketCap;
     private Long enterpriseValue;
     private Long ebitda;
+    private Long revenue;
     private BigDecimal eps;
     private BigDecimal forwardEps3Y;
 
@@ -54,7 +53,6 @@ public class FundamentalData {
     private BigDecimal priceTargetHigh;
     private BigDecimal priceTargetLow;
 
-
     @CreatedDate
     private LocalDate createdAt;
 
@@ -62,19 +60,34 @@ public class FundamentalData {
     @JoinColumn(name = "symbol")
     private Stock stock;
 
-    public Long ebitda() {
+    public Long calculateEbitda() {
         if (evEbitda == null || enterpriseValue == null) {
             log.debug("evEbitda or enterpriseValue is null, ebitda set as null");
             return null;
         }
-        return Math.divideExact(enterpriseValue, evEbitda.longValue());
+        var ebitda = Math.divideExact(enterpriseValue, evEbitda.longValue());
+        this.ebitda(ebitda);
+        return ebitda;
     }
 
-    public Long revenue() {
+    public Long calculateRevenue() {
         if (evSales == null || enterpriseValue == null) {
             log.debug("evSales or enterpriseValue is null, revenue set as null");
             return null;
         }
-        return Math.divideExact(enterpriseValue, evSales.longValue());
+        var revenue = Math.divideExact(enterpriseValue, evSales.longValue());
+        this.revenue(revenue);
+        return revenue;
+    }
+
+    public BigDecimal calculatePegForward() {
+        if(peForward == null || forwardEps3Y == null) {
+            log.debug("peForward or forwardEps3Y is null, pegForward set as null");
+            return null;
+        }
+
+        var pegForward = peForward.divide(forwardEps3Y, RoundingMode.HALF_UP);
+        this.pegForward(pegForward);
+        return pegForward;
     }
 }

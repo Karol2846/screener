@@ -36,8 +36,6 @@ public class PriceHistory {
     // moving averages dla wszystkich firm na raz: https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_3ebb08a0-39fd-4b3f-ad28-faca7a9fdfab
 
     @Id
-    private UUID id;
-
     @Column(insertable = false, updatable = false)
     private String symbol;
 

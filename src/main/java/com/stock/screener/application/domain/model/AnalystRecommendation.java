@@ -27,7 +27,6 @@ import static java.math.RoundingMode.HALF_UP;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(fluent = true, chain = true)
 @Table(name = "analyst_recommendation")
 public class AnalystRecommendation {
 

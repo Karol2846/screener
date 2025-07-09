@@ -27,7 +27,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(fluent = true, chain = true)
 @Table(name = "fundamental_data")
 public class FundamentalData {
 
@@ -66,7 +65,7 @@ public class FundamentalData {
             return null;
         }
         var ebitda = Math.divideExact(enterpriseValue, evEbitda.longValue());
-        this.ebitda(ebitda);
+        this.setEbitda(ebitda);
         return ebitda;
     }
 
@@ -76,7 +75,7 @@ public class FundamentalData {
             return null;
         }
         var revenue = Math.divideExact(enterpriseValue, evSales.longValue());
-        this.revenue(revenue);
+        this.setRevenue(revenue);
         return revenue;
     }
 
@@ -87,7 +86,7 @@ public class FundamentalData {
         }
 
         var pegForward = peForward.divide(forwardEps3Y, RoundingMode.HALF_UP);
-        this.pegForward(pegForward);
+        this.setPegForward(pegForward);
         return pegForward;
     }
 }

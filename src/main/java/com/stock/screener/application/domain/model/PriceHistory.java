@@ -11,12 +11,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static java.math.RoundingMode.HALF_UP;
@@ -27,7 +25,6 @@ import static java.math.RoundingMode.HALF_UP;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(fluent = true, chain = true)
 @Table(name = "price_history")
 public class PriceHistory {
 

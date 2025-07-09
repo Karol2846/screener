@@ -12,5 +12,8 @@ public interface StockMapper {
     @Mapping(target = "seekingAlphaTrackerId", source = "tickerId")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "priceHistory", ignore = true)
+    @Mapping(target = "fundamentalData", ignore = true)
+    @Mapping(target = "analystRecommendations", ignore = true)
     Stock mapToStock(StockSummaryCommand stockSummaryCommand);
 }

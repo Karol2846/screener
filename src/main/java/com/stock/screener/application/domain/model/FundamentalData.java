@@ -1,11 +1,13 @@
 package com.stock.screener.application.domain.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +22,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Slf4j
 @Entity
 @Getter
@@ -30,9 +34,8 @@ import java.time.LocalDate;
 @Table(name = "fundamental_data")
 public class FundamentalData {
 
-    @Id
-    @Column(insertable = false, updatable = false)
-    private String symbol;
+    @EmbeddedId
+    private CompoundId id;
 
     private Long marketCap;
     private Long enterpriseValue;
@@ -52,11 +55,9 @@ public class FundamentalData {
     private BigDecimal priceTargetHigh;
     private BigDecimal priceTargetLow;
 
-    @CreatedDate
-    private LocalDate createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "symbol")
+    @MapsId("symbol")
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "symbol", nullable = false)
     private Stock stock;
 
     public Long calculateEbitda() {

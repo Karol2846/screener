@@ -8,18 +8,18 @@ updated_at                  TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE price_history (
-symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
+symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 current_price               DECIMAL(8,2) NOT NULL,
 average_50_price            DECIMAL(8,2),
 average_100_price           DECIMAL(8,2),
 average_200_price           DECIMAL(8,2),
 created_at                  DATE NOT NULL,
 
-UNIQUE(symbol, created_at)
+PRIMARY KEY(symbol, created_at)
 );
 
 CREATE TABLE fundamental_data (
-symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
+symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 
 market_cap                  BIGINT,
 enterprise_value            BIGINT,
@@ -40,11 +40,11 @@ price_target_low            DECIMAL(8,2),
 price_target_consensus      DECIMAL(8,2),
 
 created_at                  DATE NOT NULL,
-UNIQUE(symbol, created_at)
+PRIMARY KEY(symbol, created_at)
 );
 
 CREATE TABLE analyst_recommendation (
-symbol                      VARCHAR(20) PRIMARY KEY REFERENCES stock (symbol) ON DELETE CASCADE,
+symbol                      VARCHAR(20) NOT NULL REFERENCES stock (symbol) ON DELETE CASCADE,
 
 strong_buy                  INTEGER DEFAULT 0,
 buy                         INTEGER DEFAULT 0,
@@ -53,7 +53,8 @@ sell                        INTEGER DEFAULT 0,
 strong_sell                 INTEGER DEFAULT 0,
 
 created_at                  DATE NOT NULL,
-UNIQUE(symbol, created_at)
+
+PRIMARY KEY(symbol, created_at)
 );
 
 -- indexes

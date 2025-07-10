@@ -1,22 +1,20 @@
 package com.stock.screener.application.domain.model;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static java.math.RoundingMode.HALF_UP;
@@ -30,9 +28,8 @@ import static java.math.RoundingMode.HALF_UP;
 @Table(name = "analyst_recommendation")
 public class AnalystRecommendation {
 
-    @Id
-    @Column(insertable = false, updatable = false)
-    private String symbol;
+    @EmbeddedId
+    private CompoundId id;
 
     private Integer strongBuy;
     private Integer buy;
@@ -40,11 +37,9 @@ public class AnalystRecommendation {
     private Integer sell;
     private Integer strongSell;
 
-    @CreatedDate
-    private LocalDate createdAt;
-
+    @MapsId("symbol")
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "symbol", referencedColumnName = "symbol")
+    @JoinColumn(name = "symbol", nullable = false)
     private Stock stock;
 
     public Integer total() {

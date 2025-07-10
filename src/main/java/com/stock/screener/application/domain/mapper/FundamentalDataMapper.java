@@ -1,5 +1,6 @@
 package com.stock.screener.application.domain.mapper;
 
+import com.stock.screener.application.domain.model.CompoundId;
 import com.stock.screener.application.domain.model.FundamentalData;
 import com.stock.screener.application.domain.model.Stock;
 import com.stock.screener.application.port.command.PriceTargetCommand;
@@ -16,14 +17,16 @@ public interface FundamentalDataMapper {
 
     default FundamentalData fromStock(Stock  stock) {
         return FundamentalData.builder()
-                .symbol(stock.getSymbol())
+                .id(CompoundId.builder()
+                        .symbol(stock.getSymbol())
+                        .build())
                 .build();
     }
 
-    @Mapping(target = "symbol", source = "ticker")
+    @Mapping(target = "id.symbol", source = "ticker")
     void update(@MappingTarget FundamentalData fundamentalData, StockSummaryCommand stockSummaryCommand);
 
-    @Mapping(target = "symbol", ignore = true)
+    @Mapping(target = "id.symbol", ignore = true)
     void update(@MappingTarget FundamentalData fundamentalData, PriceTargetCommand priceTargetCommand);
 
     @AfterMapping
@@ -34,6 +37,6 @@ public interface FundamentalDataMapper {
     }
 
 
-    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "id.createdAt", ignore = true)
     void update(@MappingTarget FundamentalData existingData, FundamentalData updatedFundamentalData);
 }

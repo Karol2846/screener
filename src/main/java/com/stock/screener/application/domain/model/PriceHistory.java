@@ -1,10 +1,11 @@
 package com.stock.screener.application.domain.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,9 +33,8 @@ public class PriceHistory {
     // price dla każdej firmy osobno: https://finnhub.io/api/v1/quote?symbol=AAPL&token=d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig
     // moving averages dla wszystkich firm na raz: https://rapidapi.com/apidojo/api/seeking-alpha/playground/apiendpoint_3ebb08a0-39fd-4b3f-ad28-faca7a9fdfab
 
-    @Id
-    @Column(insertable = false, updatable = false)
-    private String symbol;
+    @EmbeddedId
+    private CompoundId id;
 
     private BigDecimal currentPrice; // (pc - previous close price)
 
@@ -47,11 +47,9 @@ public class PriceHistory {
     @Column(name = "average_200_price", precision = 12, scale = 4)
     private BigDecimal average200Price;
 
-    @CreatedDate
-    private LocalDate createdAt;
-
+    @MapsId("symbol")
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "symbol", referencedColumnName = "symbol")
+    @JoinColumn(name = "symbol", nullable = false)
     private Stock stock;
 
     public BigDecimal upside(BigDecimal priceTarget) {

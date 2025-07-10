@@ -23,7 +23,7 @@ public interface FundamentalDataMapper {
                 .build();
     }
 
-    @Mapping(target = "id.symbol", source = "ticker")
+    @Mapping(target = "id.symbol", ignore = true)
     void update(@MappingTarget FundamentalData fundamentalData, StockSummaryCommand stockSummaryCommand);
 
     @Mapping(target = "id.symbol", ignore = true)

@@ -12,10 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static java.math.RoundingMode.HALF_UP;
@@ -36,16 +34,16 @@ public class PriceHistory {
     @EmbeddedId
     private CompoundId id;
 
-    private BigDecimal currentPrice; // (pc - previous close price)
+    private BigDecimal currentPrice;
 
-    @Column(name = "average_50_price", precision = 12, scale = 4)
-    private BigDecimal average50Price;
+    @Column(name = "average_50_price")
+    private BigDecimal averagePrice50Days;
 
-    @Column(name = "average_100_price", precision = 12, scale = 4)
-    private BigDecimal average100Price;
+    @Column(name = "average_100_price")
+    private BigDecimal averagePrice100Days;
 
-    @Column(name = "average_200_price", precision = 12, scale = 4)
-    private BigDecimal average200Price;
+    @Column(name = "average_200_price")
+    private BigDecimal averagePrice200Days;
 
     @MapsId("symbol")
     @ManyToOne(fetch = LAZY)

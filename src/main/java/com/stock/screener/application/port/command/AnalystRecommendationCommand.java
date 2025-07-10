@@ -8,6 +8,5 @@ public record AnalystRecommendationCommand(Integer tickerId,
                                            Integer sell,
                                            Integer hold,
                                            Integer buy,
-                                           Integer strongBuy,
-                                           Integer total
+                                           Integer strongBuy
 ) {}

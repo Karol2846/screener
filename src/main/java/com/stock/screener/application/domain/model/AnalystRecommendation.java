@@ -55,6 +55,7 @@ public class AnalystRecommendation {
         if (total == 0) return BigDecimal.ZERO;
 
         int bullish = (strongBuy != null ? strongBuy : 0) + (buy != null ? buy : 0);
-        return new BigDecimal(bullish).divide(new BigDecimal(total), 4, HALF_UP);
+        return new BigDecimal(bullish).divide(
+                new BigDecimal(total), 4, HALF_UP).stripTrailingZeros();
     }
 }

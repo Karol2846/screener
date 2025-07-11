@@ -1,6 +1,10 @@
 package com.stock.screener.application.port.in;
 
+import com.stock.screener.application.domain.model.Stock;
+
+import java.util.List;
+
 public interface StockUseCase {
 
-    void saveStock(String symbols);
+    List<Stock> saveStock(String symbols);
 }

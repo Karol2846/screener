@@ -24,7 +24,7 @@ public class StockService implements StockUseCase {
     private final SeekingAlphaApi seekingAlphaApi;
 
     @Override
-    public List<Stock> saveStock(String symbols) {
+    public void saveStock(String symbols) {
 
         List<StockSummaryCommand> stockSummaryCommand = seekingAlphaApi.getStockSummary(symbols);
         log.info("Retrived {} stocks: {}", stockSummaryCommand.size(), stockSummaryCommand);
@@ -37,9 +37,21 @@ public class StockService implements StockUseCase {
         log.info("Saving stocks: {}", stocks);
         List<Stock> savedstocks = stockRepository.saveAll(stocks);
         log.info("Saved stocks: {}", savedstocks);
+    }
 
+    @Override
+    public List<Stock> findStocks(List<String> symbols) {
+        return getStocksFromDb(symbols);
+    }
+
+    @Override
+    public List<Stock> findStocks(String symbols) {
         List<String> symbolList = Arrays.asList(Strings.splitList(symbols));
-        log.info("Retriving stocks for symbols: [{}]", symbolList);
-        return stockRepository.findAllBySymbolIn(symbolList);
+        return getStocksFromDb(symbolList);
+    }
+
+    private List<Stock> getStocksFromDb(List<String> symbols) {
+        log.info("Retriving stocks for symbols: [{}]", symbols);
+        return stockRepository.findAllBySymbolIn(symbols);
     }
 }

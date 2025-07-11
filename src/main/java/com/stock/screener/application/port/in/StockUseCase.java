@@ -6,5 +6,9 @@ import java.util.List;
 
 public interface StockUseCase {
 
-    List<Stock> saveStock(String symbols);
+    void saveStock(String symbols);
+
+    List<Stock> findStocks(List<String> symbols);
+
+    List<Stock> findStocks(String symbols);
 }

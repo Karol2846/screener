@@ -1,4 +1,4 @@
-package com.stock.screener.application.port.in;
+package com.stock.screener.application.port.in.api;
 
 import com.stock.screener.application.port.command.AnalystRecommendationCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;

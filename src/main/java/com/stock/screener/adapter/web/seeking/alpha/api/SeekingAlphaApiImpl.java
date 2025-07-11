@@ -1,14 +1,16 @@
 package com.stock.screener.adapter.web.seeking.alpha.api;
 
 import com.stock.screener.adapter.web.seeking.alpha.client.SeekingAlphaClient;
+import com.stock.screener.adapter.web.seeking.alpha.model.summary.SummaryResponse;
 import com.stock.screener.adapter.web.seeking.alpha.properties.SeekingAlphaProperties;
 import com.stock.screener.application.exception.ListSizeExceededException;
 import com.stock.screener.application.port.command.AnalystRecommendationCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.application.port.command.PriceTargetCommand;
 import com.stock.screener.application.port.command.StockSummaryCommand;
-import com.stock.screener.application.port.in.SeekingAlphaApi;
+import com.stock.screener.application.port.in.api.SeekingAlphaApi;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMa
 import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper.mapToPriceTarget;
 import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper.mapToStockSummary;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SeekingAlphaApiImpl implements SeekingAlphaApi {
@@ -29,7 +32,10 @@ public class SeekingAlphaApiImpl implements SeekingAlphaApi {
     public List<StockSummaryCommand> getStockSummary(String symbols) {
 
         validateListSize(symbols);
-        return mapToStockSummary(client.getSummary(symbols));
+        SummaryResponse summaryResponse = client.getSummary(symbols);
+
+        log.info("Get Stock Summary Response: {}", summaryResponse);
+        return mapToStockSummary(summaryResponse);
     }
 
     @Override

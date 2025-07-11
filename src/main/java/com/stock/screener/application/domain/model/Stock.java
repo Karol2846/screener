@@ -49,4 +49,16 @@ public class Stock {
 
     @OneToMany(mappedBy = "stock", cascade = ALL, fetch = LAZY)
     private List<AnalystRecommendation> analystRecommendations;
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "symbol='" + symbol + '\'' +
+                ", seekingAlphaTrackerId=" + seekingAlphaTrackerId +
+                ", companyName='" + companyName + '\'' +
+                ", sector='" + sector + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

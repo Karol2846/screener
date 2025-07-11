@@ -5,7 +5,9 @@ import com.stock.screener.application.port.command.StockSummaryCommand;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface StockMapper {
 
     @Mapping(target = "symbol", source = "ticker")

@@ -1,6 +1,7 @@
 package com.stock.screener.application.domain.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -11,9 +12,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -27,6 +29,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "stock")
+@EntityListeners(AuditingEntityListener.class)
 public class Stock {
 
     @Id
@@ -39,7 +42,7 @@ public class Stock {
     private LocalDate createdAt;
 
     @LastModifiedDate
-    private OffsetDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "stock", cascade = ALL, fetch = LAZY)
     private List<PriceHistory> priceHistory;

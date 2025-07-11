@@ -3,6 +3,7 @@ package com.stock.screener.application.domain.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -12,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 
@@ -25,6 +27,7 @@ import static java.math.RoundingMode.HALF_UP;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "price_history")
+@EntityListeners(AuditingEntityListener.class)
 public class PriceHistory {
 
     //DOCS

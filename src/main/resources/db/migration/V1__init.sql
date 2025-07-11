@@ -4,7 +4,7 @@ seeking_alpha_tracker_id    INT NOT NULL,
 company_name                VARCHAR(255) NOT NULL,
 sector                      VARCHAR(100) NOT NULL,
 created_at                  DATE NOT NULL,
-updated_at                  TIMESTAMP WITH TIME ZONE NOT NULL
+updated_at                  TIMESTAMP NOT NULL
 );
 
 CREATE TABLE price_history (

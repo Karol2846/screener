@@ -33,7 +33,7 @@ public class PriceHistoryService implements PriceHistoryUseCase {
         // - sprawdzać w DB, czy istnieje priceHistory dla tego tickera i daty (now())
         //      - tak -> return
         //      - nie:
-        //          pobierz element z API <- najpierw je zaimplementuj XD
+        //          pobierz element z API
         //          zapisz w DB
 
         List<CurrentPriceCommand> currentPriceCommands = symbols.stream()

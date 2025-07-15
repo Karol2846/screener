@@ -59,4 +59,12 @@ public class AnalystRecommendation {
         return new BigDecimal(bullish).divide(
                 new BigDecimal(total), 4, HALF_UP).stripTrailingZeros();
     }
+
+    public AnalystRecommendation fromStock(String seekingAlphaTrackerId) {
+        return AnalystRecommendation.builder()
+                .id(CompoundId.builder()
+                        .symbol(stock.getSymbol())
+                        .build())
+                .build();
+    }
 }

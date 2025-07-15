@@ -28,4 +28,11 @@ public class CompoundId implements Serializable {
     @CreatedDate
     @Column(updatable = false, insertable = false)
     private LocalDate createdAt;
+
+    public static CompoundId forSymbolWithActualDate(String symbol) {
+        return CompoundId.builder()
+                .symbol(symbol)
+                .createdAt(LocalDate.now())
+                .build();
+    }
 }

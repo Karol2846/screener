@@ -65,3 +65,8 @@ public class Stock {
                 '}';
     }
 }
+
+// TODO: chat with claude: https://claude.ai/chat/c3ba2324-e23d-49da-806d-72c37cb0f7f0
+//  Ogólne podejście bardzo mi się podoba :)
+//  Myślę ze cache rozwiąże problem - tym bardziej że nie będzie on duży. Raczje nie będę miał więcej niż 100 spółek. Jak na razie jestem w miejscu, w którym tworze pojedyncze serwisy do updateowania - później chciałem zrobić orchestrator który koordynowałby pracę między nimi. Myślisz że to podejście jest dobre, czy lepiej użyć applicationEventów?
+//  Zastanawiam się też nad sensem 2 map - nie lepiej jedna? Właściwie, to zarówno klucze jak i wartości będą unikalne

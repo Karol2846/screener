@@ -73,4 +73,23 @@ public class PriceHistory {
 
         return currentPrice.divide(eps, 4, HALF_UP);
     }
+
+    public static PriceHistory fromSymbol(String symbol) {
+        return PriceHistory.builder()
+                .id(CompoundId.builder()
+                        .symbol(symbol)
+                        .build())
+                .build();
+    }
+
+    @Override
+    public String toString() {
+        return "PriceHistory{" +
+                "id=" + id +
+                ", currentPrice=" + currentPrice +
+                ", averagePrice50Days=" + averagePrice50Days +
+                ", averagePrice100Days=" + averagePrice100Days +
+                ", averagePrice200Days=" + averagePrice200Days +
+                '}';
+    }
 }

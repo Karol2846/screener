@@ -27,40 +27,46 @@ public class SeekingAlphaApiImpl implements SeekingAlphaApi {
 
     private final SeekingAlphaClient client;
     private final SeekingAlphaProperties properties;
+    public static final String DELIMITER = ",";
 
     @Override
-    public List<StockSummaryCommand> getStockSummary(String symbols) {
+    public List<StockSummaryCommand> getStockSummary(List<String> symbols) {
 
         validateListSize(symbols);
-        SummaryResponse summaryResponse = client.getSummary(symbols);
+        SummaryResponse summaryResponse = client.getSummary(join(symbols));
 
         log.info("Get Stock Summary Response: {}", summaryResponse);
         return mapToStockSummary(summaryResponse);
     }
 
     @Override
-    public List<MovingAveragesCommand> getMovingAverages(String symbols) {
+    public List<MovingAveragesCommand> getMovingAverages(List<String> symbols) {
 
         validateListSize(symbols);
-        return mapToMovingAverages(client.getMovingAverage(symbols));
+        return mapToMovingAverages(client.getMovingAverage(join(symbols)));
     }
 
     @Override
-    public List<PriceTargetCommand> getPriceTarget(String tickerIds) {
+    public List<PriceTargetCommand> getPriceTarget(List<String> tickerIds) {
 
         validateListSize(tickerIds);
-        return mapToPriceTarget(client.getPriceTarget(tickerIds));
+        return mapToPriceTarget(client.getPriceTarget(join(tickerIds)));
     }
 
     @Override
-    public List<AnalystRecommendationCommand> getAnalystRecommendation(String tickerIds) {
+    public List<AnalystRecommendationCommand> getAnalystRecommendation(List<String> tickerIds) {
 
         validateListSize(tickerIds);
-        return mapToAnalystRecommendation(client.getAnalystRecommendation(tickerIds));
+        return mapToAnalystRecommendation(client.getAnalystRecommendation(join(tickerIds)));
     }
 
-    private void validateListSize(String symbols) {
-        if (symbols.split(",").length > properties.maxListSize()) {
+
+    private static String join(List<String> symbols) {
+        return String.join(DELIMITER, symbols);
+    }
+
+    private void validateListSize(List<String> symbols) {
+        if (symbols.size() > properties.maxListSize()) {
             throw new ListSizeExceededException("The number of symbols exceeds the maximum allowed size of " +
                     properties.maxListSize());
         }

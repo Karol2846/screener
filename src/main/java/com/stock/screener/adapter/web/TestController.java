@@ -7,6 +7,7 @@ import com.stock.screener.adapter.web.seeking.alpha.model.analyst_recomendation.
 import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.price_target.PriceTargetResponse;
 import com.stock.screener.application.port.in.StockUseCase;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ public class TestController {
 
     @GetMapping("/summary/{symbols}")
     public void getSummary(@PathVariable String symbols) {
-        stockUseCase.saveStock(symbols);
+        stockUseCase.saveStock(Arrays.stream(symbols.split(",")).toList());
     }
 
     @GetMapping("/moving-average/{symbols}")

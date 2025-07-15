@@ -24,7 +24,7 @@ public class StockService implements StockUseCase {
     private final SeekingAlphaApi seekingAlphaApi;
 
     @Override
-    public void saveStock(String symbols) {
+    public void saveStock(List<String> symbols) {
 
         List<StockSummaryCommand> stockSummaryCommand = seekingAlphaApi.getStockSummary(symbols);
         log.info("Retrived {} stocks: {}", stockSummaryCommand.size(), stockSummaryCommand);

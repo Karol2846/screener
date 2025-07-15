@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface SeekingAlphaApi {
 
-    List<StockSummaryCommand> getStockSummary(String symbols);
+    List<StockSummaryCommand> getStockSummary(List<String> symbols);
 
-    List<MovingAveragesCommand> getMovingAverages(String symbols);
+    List<MovingAveragesCommand> getMovingAverages(List<String> symbols);
 
-    List<PriceTargetCommand> getPriceTarget(String tickerIds);
+    List<PriceTargetCommand> getPriceTarget(List<String> tickerIds);
 
-    List<AnalystRecommendationCommand> getAnalystRecommendation(String tickerIds);
+    List<AnalystRecommendationCommand> getAnalystRecommendation(List<String> tickerIds);
 }

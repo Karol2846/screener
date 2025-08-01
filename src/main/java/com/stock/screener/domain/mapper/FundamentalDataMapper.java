@@ -1,8 +1,8 @@
-package com.stock.screener.application.domain.mapper;
+package com.stock.screener.domain.mapper;
 
-import com.stock.screener.application.domain.model.CompoundId;
-import com.stock.screener.application.domain.model.FundamentalData;
-import com.stock.screener.application.domain.model.Stock;
+import com.stock.screener.domain.model.CompoundId;
+import com.stock.screener.domain.model.FundamentalData;
+import com.stock.screener.domain.model.Stock;
 import com.stock.screener.application.port.command.PriceTargetCommand;
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import org.mapstruct.AfterMapping;

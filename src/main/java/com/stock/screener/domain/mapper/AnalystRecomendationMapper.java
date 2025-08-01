@@ -1,6 +1,6 @@
-package com.stock.screener.application.domain.mapper;
+package com.stock.screener.domain.mapper;
 
-import com.stock.screener.application.domain.model.AnalystRecommendation;
+import com.stock.screener.domain.model.AnalystRecommendation;
 import com.stock.screener.application.port.command.AnalystRecommendationCommand;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

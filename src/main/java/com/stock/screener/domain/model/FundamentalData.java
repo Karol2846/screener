@@ -1,4 +1,4 @@
-package com.stock.screener.application.domain.model;
+package com.stock.screener.domain.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

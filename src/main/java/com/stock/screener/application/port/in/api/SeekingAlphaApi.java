@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SeekingAlphaApi {
 
-    List<StockSummaryCommand> getStockSummary(List<String> symbols);
+    List<StockSummaryCommand> getStockSummaries(List<String> symbols);
 
     List<MovingAveragesCommand> getMovingAverages(List<String> symbols);
 

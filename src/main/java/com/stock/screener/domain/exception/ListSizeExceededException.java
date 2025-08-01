@@ -1,4 +1,4 @@
-package com.stock.screener.application.exception;
+package com.stock.screener.domain.exception;
 
 //TODO: create validator that will check permitted size of the list (stored in properties)
 public class ListSizeExceededException extends RuntimeException {

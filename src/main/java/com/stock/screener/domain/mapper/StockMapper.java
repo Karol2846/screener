@@ -1,6 +1,6 @@
-package com.stock.screener.application.domain.mapper;
+package com.stock.screener.domain.mapper;
 
-import com.stock.screener.application.domain.model.Stock;
+import com.stock.screener.domain.model.Stock;
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

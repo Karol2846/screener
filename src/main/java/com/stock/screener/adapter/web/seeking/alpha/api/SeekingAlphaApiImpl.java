@@ -3,7 +3,7 @@ package com.stock.screener.adapter.web.seeking.alpha.api;
 import com.stock.screener.adapter.web.seeking.alpha.client.SeekingAlphaClient;
 import com.stock.screener.adapter.web.seeking.alpha.model.summary.SummaryResponse;
 import com.stock.screener.adapter.web.seeking.alpha.properties.SeekingAlphaProperties;
-import com.stock.screener.application.exception.ListSizeExceededException;
+import com.stock.screener.domain.exception.ListSizeExceededException;
 import com.stock.screener.application.port.command.AnalystRecommendationCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.application.port.command.PriceTargetCommand;
@@ -30,7 +30,7 @@ public class SeekingAlphaApiImpl implements SeekingAlphaApi {
     public static final String DELIMITER = ",";
 
     @Override
-    public List<StockSummaryCommand> getStockSummary(List<String> symbols) {
+    public List<StockSummaryCommand> getStockSummaries(List<String> symbols) {
 
         validateListSize(symbols);
         SummaryResponse summaryResponse = client.getSummary(join(symbols));

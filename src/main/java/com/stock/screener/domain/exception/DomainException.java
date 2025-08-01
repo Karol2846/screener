@@ -1,4 +1,4 @@
-package com.stock.screener.application.exception;
+package com.stock.screener.domain.exception;
 
 public class DomainException extends RuntimeException {
 

@@ -1,0 +1,6 @@
+AAPL
+MSFT
+GOOGL
+TSLA
+// NVDA - commented out for test
+META

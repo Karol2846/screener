@@ -26,3 +26,6 @@ seeking-alpha:
 finhub:
   api-key: ${FINHUB_TOKEN:d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig}
   base-url: https://finnhub.io/api/v1
+
+symbols:
+  file-path: src/main/resources/static/symbols.txt

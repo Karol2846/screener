@@ -2,7 +2,7 @@ package com.stock.screener.application.handler;
 
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import com.stock.screener.application.port.out.StockRepository;
-import com.stock.screener.application.service.event.ApplicationEvent;
+import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import com.stock.screener.domain.mapper.StockMapper;
 import com.stock.screener.domain.model.Stock;
 import com.stock.screener.domain.service.StockIdentifierMappingService;
@@ -23,7 +23,7 @@ public class StockCreationEventHandler {
 
     @EventListener
     @Transactional
-    public void handleStockSummaryForStockCreation(ApplicationEvent<StockSummaryCommand> event) {
+    public void handleStockSummaryForStockCreation(ScreenerApplicationEvent<StockSummaryCommand> event) {
         StockSummaryCommand summary = event.payload();
 
         stockRepository.findById(summary.ticker()).ifPresentOrElse(

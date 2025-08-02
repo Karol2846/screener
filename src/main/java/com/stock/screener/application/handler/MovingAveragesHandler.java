@@ -3,7 +3,7 @@ package com.stock.screener.application.handler;
 import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
 
 import com.stock.screener.application.port.out.PriceHistoryRepository;
-import com.stock.screener.application.service.event.ApplicationEvent;
+import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import com.stock.screener.domain.mapper.PriceHistoryMapper;
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
@@ -21,7 +21,7 @@ public class MovingAveragesHandler {
     private final PriceHistoryRepository priceRepository;
 
     @EventListener
-    public void updateMovingAverage(ApplicationEvent<MovingAveragesCommand> event) {
+    public void updateMovingAverage(ScreenerApplicationEvent<MovingAveragesCommand> event) {
         MovingAveragesCommand command = event.payload();
         log.info("Updating price history for symbol: {}", command.ticker());
 

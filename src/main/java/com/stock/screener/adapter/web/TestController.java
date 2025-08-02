@@ -6,7 +6,7 @@ import com.stock.screener.adapter.web.seeking.alpha.client.SeekingAlphaClient;
 import com.stock.screener.adapter.web.seeking.alpha.model.analyst_recomendation.AnalystRecommendationResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.price_target.PriceTargetResponse;
-import com.stock.screener.application.port.in.StockUseCase;
+import com.stock.screener.application.service.StockSummaryService;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class TestController {
 
     private final FinHubClient finHubClient;
     private final SeekingAlphaClient seekingAlphaClient;
-    private final StockUseCase stockUseCase;
+    private final StockSummaryService stockSummaryService;
 
     @GetMapping("/price/{symbol}")
     public CurrentPriceResponse getCurrentPrice(@PathVariable String symbol) {
@@ -28,7 +28,9 @@ public class TestController {
 
     @GetMapping("/summary/{symbols}")
     public void getSummary(@PathVariable String symbols) {
-        stockUseCase.saveStock(Arrays.stream(symbols.split(",")).toList());
+
+        var symbolsList = Arrays.stream(symbols.split(",")).toList();
+        stockSummaryService.processStockSummaries(symbolsList);
     }
 
     @GetMapping("/moving-average/{symbols}")

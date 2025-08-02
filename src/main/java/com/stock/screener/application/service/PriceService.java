@@ -4,7 +4,7 @@ import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.application.port.in.api.FinHubApi;
 import com.stock.screener.application.port.in.api.SeekingAlphaApi;
-import com.stock.screener.application.service.event.ApplicationEvent;
+import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -29,13 +29,13 @@ public class PriceService {
                 .toList();
 
         currentPrices.forEach(event ->
-                eventPublisher.publishEvent(ApplicationEvent.of(event)));
+                eventPublisher.publishEvent(ScreenerApplicationEvent.of(event)));
     }
 
     private void processMovingAverages(List<String> symbols) {
         List<MovingAveragesCommand> movingAverages = seekingAlphaApi.getMovingAverages(symbols);
 
         movingAverages.forEach(event ->
-                eventPublisher.publishEvent(ApplicationEvent.of(event)));
+                eventPublisher.publishEvent(ScreenerApplicationEvent.of(event)));
     }
 }

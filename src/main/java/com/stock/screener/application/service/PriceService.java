@@ -1,13 +1,14 @@
 package com.stock.screener.application.service;
 
+import com.stock.screener.application.event.DomainEventPublisher;
+import com.stock.screener.application.event.model.CurrentPriceEvent;
+import com.stock.screener.application.event.model.MovingAveragesEvent;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.application.port.in.api.FinHubApi;
 import com.stock.screener.application.port.in.api.SeekingAlphaApi;
-import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +17,7 @@ public class PriceService {
 
     private final SeekingAlphaApi seekingAlphaApi;
     private final FinHubApi finHubApi;
-    private final ApplicationEventPublisher eventPublisher;
+    private final DomainEventPublisher eventPublisher;
 
     public void processPrice(List<String> symbols) {
         processCurrentPrice(symbols);
@@ -29,13 +30,13 @@ public class PriceService {
                 .toList();
 
         currentPrices.forEach(event ->
-                eventPublisher.publishEvent(ScreenerApplicationEvent.of(event)));
+                eventPublisher.publish(new CurrentPriceEvent(event)));
     }
 
     private void processMovingAverages(List<String> symbols) {
         List<MovingAveragesCommand> movingAverages = seekingAlphaApi.getMovingAverages(symbols);
 
         movingAverages.forEach(event ->
-                eventPublisher.publishEvent(ScreenerApplicationEvent.of(event)));
+                eventPublisher.publish(new MovingAveragesEvent(event)));
     }
 }

@@ -1,14 +1,15 @@
 package com.stock.screener.application.handler;
 
+import com.stock.screener.application.event.model.StockSummaryEvent;
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import com.stock.screener.application.port.out.StockRepository;
-import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import com.stock.screener.domain.mapper.StockMapper;
 import com.stock.screener.domain.model.Stock;
 import com.stock.screener.domain.service.StockIdentifierMappingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +22,10 @@ public class StockCreationEventHandler {
     private final StockIdentifierMappingService mappingService;
     private final StockMapper stockMapper;
 
+    @Async
     @EventListener
     @Transactional
-    public void handleStockSummaryForStockCreation(ScreenerApplicationEvent<StockSummaryCommand> event) {
+    public void handleStockSummaryForStockCreation(StockSummaryEvent event) {
         StockSummaryCommand summary = event.payload();
 
         stockRepository.findById(summary.ticker()).ifPresentOrElse(

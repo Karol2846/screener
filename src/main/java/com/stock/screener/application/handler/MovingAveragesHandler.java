@@ -2,15 +2,17 @@ package com.stock.screener.application.handler;
 
 import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
 
+import com.stock.screener.application.event.model.MovingAveragesEvent;
 import com.stock.screener.application.port.out.PriceHistoryRepository;
-import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import com.stock.screener.domain.mapper.PriceHistoryMapper;
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -20,10 +22,12 @@ public class MovingAveragesHandler {
     private final PriceHistoryMapper priceMapper;
     private final PriceHistoryRepository priceRepository;
 
+    @Async
     @EventListener
-    public void updateMovingAverage(ScreenerApplicationEvent<MovingAveragesCommand> event) {
+    @Transactional
+    public void updateMovingAverage(MovingAveragesEvent event) {
         MovingAveragesCommand command = event.payload();
-        log.info("Updating price history for symbol: {}", command.ticker());
+        log.info("Updating moving averages for symbol: {}", command.ticker());
 
         priceRepository.findById(forSymbolWithActualDate(command.ticker())).ifPresentOrElse(
                 price -> updateMovingAverage(price, command),

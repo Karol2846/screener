@@ -1,41 +1,69 @@
 package com.stock.screener.domain.mapper;
 
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
-
 import com.stock.screener.domain.model.CompoundId;
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import com.stock.screener.domain.model.Stock;
+import jakarta.persistence.EntityManager;
+import java.time.LocalDate;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = SPRING)
-public interface PriceHistoryMapper {
+@Component
+@RequiredArgsConstructor
+public class PriceHistoryMapper {
 
-    @Mapping(target = "id", ignore = true)
-    void update(@MappingTarget PriceHistory priceHistory, CurrentPriceCommand command);
+    private final EntityManager entityManager;
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "averagePrice50Days", source = "average50Days")
-    @Mapping(target = "averagePrice100Days", source = "average100Days")
-    @Mapping(target = "averagePrice200Days", source = "average200Days")
-    void update(@MappingTarget PriceHistory priceHistory, MovingAveragesCommand command);
+    public void update(PriceHistory priceHistory, CurrentPriceCommand command) {
+        if ( command == null ) {
+            return;
+        }
 
-    @Mapping(target = "id", source = "ticker", qualifiedByName = "mapSymbol")
-    PriceHistory from(CurrentPriceCommand command);
+        priceHistory.setCurrentPrice(command.currentPrice());
+    }
 
-    @Mapping(target = "id", source = "ticker", qualifiedByName = "mapSymbol")
-    @Mapping(target = "averagePrice50Days", source = "average50Days")
-    @Mapping(target = "averagePrice100Days", source = "average100Days")
-    @Mapping(target = "averagePrice200Days", source = "average200Days")
-    PriceHistory from(MovingAveragesCommand command);
+    public void update(PriceHistory priceHistory, MovingAveragesCommand command) {
+        if ( command == null ) {
+            return;
+        }
 
-    @Named("mapSymbol")
-    default CompoundId map(String ticker) {
-        return CompoundId.builder()
-                .symbol(ticker)
+        priceHistory.setAveragePrice50Days(command.average50Days());
+        priceHistory.setAveragePrice100Days(command.average100Days());
+        priceHistory.setAveragePrice200Days(command.average200Days());
+    }
+
+    public PriceHistory from(CurrentPriceCommand command) {
+        if (command == null) {
+            return null;
+        }
+        Stock stockReference = entityManager.getReference(Stock.class, command.ticker());
+
+        return PriceHistory.builder()
+                .id(CompoundId.builder()
+                        .symbol(command.ticker())
+                        .createdAt(LocalDate.now())
+                        .build())
+                .currentPrice(command.currentPrice())
+                .stock(stockReference)
                 .build();
     }
+
+    public PriceHistory from(MovingAveragesCommand command) {
+        if (command == null) {
+            return null;
+        }
+        Stock stockReference = entityManager.getReference(Stock.class, command.ticker());
+
+        return PriceHistory.builder()
+                .id(CompoundId.builder()
+                        .symbol(command.ticker())
+                        .createdAt(LocalDate.now())
+                        .build())
+                .averagePrice50Days(command.average50Days())
+                .averagePrice100Days(command.average100Days())
+                .averagePrice200Days(command.average200Days())
+                .stock(stockReference)
+                .build();    }
 }

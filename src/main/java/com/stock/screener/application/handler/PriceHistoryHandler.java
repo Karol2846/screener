@@ -2,14 +2,15 @@ package com.stock.screener.application.handler;
 
 import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
 
+import com.stock.screener.application.event.model.CurrentPriceEvent;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
-import com.stock.screener.application.service.event.ScreenerApplicationEvent;
 import com.stock.screener.domain.mapper.PriceHistoryMapper;
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.out.PriceHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +22,12 @@ public class PriceHistoryHandler {
     private final PriceHistoryMapper priceMapper;
     private final PriceHistoryRepository priceRepository;
 
+    @Async
     @EventListener
     @Transactional
-    public void updateCurrentPrice(ScreenerApplicationEvent<CurrentPriceCommand> event) {
+    public void updateCurrentPrice(CurrentPriceEvent event) {
         CurrentPriceCommand command = event.payload();
-        log.info("Updating price history for symbol: {}", command.ticker());
+        log.info("Updating current price for symbol: {}", command.ticker());
 
         priceRepository.findById(forSymbolWithActualDate(command.ticker())).ifPresentOrElse(
                 price -> updateCurrentPrice(price, command),

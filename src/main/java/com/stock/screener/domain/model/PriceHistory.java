@@ -1,5 +1,6 @@
 package com.stock.screener.domain.model;
 
+import com.stock.screener.application.port.command.CurrentPriceCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -72,14 +73,6 @@ public class PriceHistory {
         }
 
         return currentPrice.divide(eps, 4, HALF_UP);
-    }
-
-    public static PriceHistory fromSymbol(String symbol) {
-        return PriceHistory.builder()
-                .id(CompoundId.builder()
-                        .symbol(symbol)
-                        .build())
-                .build();
     }
 
     @Override

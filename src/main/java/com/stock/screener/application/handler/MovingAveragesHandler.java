@@ -2,6 +2,7 @@ package com.stock.screener.application.handler;
 
 import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
 
+import com.stock.screener.application.event.DomainEventHandler;
 import com.stock.screener.application.event.model.MovingAveragesEvent;
 import com.stock.screener.application.port.out.PriceHistoryRepository;
 import com.stock.screener.domain.mapper.PriceHistoryMapper;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MovingAveragesHandler {
+public class MovingAveragesHandler implements DomainEventHandler<MovingAveragesEvent> {
 
     private final PriceHistoryMapper priceMapper;
     private final PriceHistoryRepository priceRepository;
@@ -25,7 +26,7 @@ public class MovingAveragesHandler {
     @Async
     @EventListener
     @Transactional
-    public void updateMovingAverage(MovingAveragesEvent event) {
+    public void handle(MovingAveragesEvent event) {
         MovingAveragesCommand command = event.payload();
         log.info("Updating moving averages for symbol: {}", command.ticker());
 

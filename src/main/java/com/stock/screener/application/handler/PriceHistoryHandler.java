@@ -2,6 +2,7 @@ package com.stock.screener.application.handler;
 
 import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
 
+import com.stock.screener.application.event.DomainEventHandler;
 import com.stock.screener.application.event.model.CurrentPriceEvent;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.domain.mapper.PriceHistoryMapper;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PriceHistoryHandler {
+public class PriceHistoryHandler implements DomainEventHandler<CurrentPriceEvent> {
 
     private final PriceHistoryMapper priceMapper;
     private final PriceHistoryRepository priceRepository;
@@ -25,7 +26,7 @@ public class PriceHistoryHandler {
     @Async
     @EventListener
     @Transactional
-    public void updateCurrentPrice(CurrentPriceEvent event) {
+    public void handle(CurrentPriceEvent event) {
         CurrentPriceCommand command = event.payload();
         log.info("Updating current price for symbol: {}", command.ticker());
 

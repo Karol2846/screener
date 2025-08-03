@@ -26,7 +26,7 @@ public class CompoundId implements Serializable {
     private String symbol;
 
     @CreatedDate
-    @Column(updatable = false, insertable = false)
+    @Column(updatable = false)
     private LocalDate createdAt;
 
     public static CompoundId forSymbolWithActualDate(String symbol) {

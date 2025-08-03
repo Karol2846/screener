@@ -2,6 +2,7 @@ spring:
   application:
     name: screener
 
+
   datasource:
     url: "jdbc:postgresql://localhost:5432/screener"
     username: "screener"
@@ -29,3 +30,11 @@ finhub:
 
 symbols:
   file-path: src/main/resources/static/symbols.txt
+
+logging:
+  level:
+    com:
+      stock:
+        screener:
+          application:
+            handler: DEBUG

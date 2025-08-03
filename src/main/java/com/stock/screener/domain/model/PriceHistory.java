@@ -1,6 +1,5 @@
 package com.stock.screener.domain.model;
 
-import com.stock.screener.application.port.command.CurrentPriceCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

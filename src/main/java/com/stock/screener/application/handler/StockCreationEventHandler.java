@@ -1,5 +1,6 @@
 package com.stock.screener.application.handler;
 
+import com.stock.screener.application.event.DomainEventHandler;
 import com.stock.screener.application.event.model.StockSummaryEvent;
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import com.stock.screener.application.port.out.StockRepository;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class StockCreationEventHandler {
+public class StockCreationEventHandler implements DomainEventHandler<StockSummaryEvent> {
 
     private final StockRepository stockRepository;
     private final StockIdentifierMappingService mappingService;
@@ -25,7 +26,7 @@ public class StockCreationEventHandler {
     @Async
     @EventListener
     @Transactional
-    public void handleStockSummaryForStockCreation(StockSummaryEvent event) {
+    public void handle(StockSummaryEvent event) {
         StockSummaryCommand summary = event.payload();
 
         stockRepository.findById(summary.ticker()).ifPresentOrElse(

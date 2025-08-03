@@ -5,7 +5,6 @@ import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.domain.model.Stock;
-import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PriceHistoryMapper {
 
-    private final EntityManager entityManager;
+    private final StockReference stockReference;
 
     public void update(PriceHistory priceHistory, CurrentPriceCommand command) {
         if ( command == null ) {
@@ -38,7 +37,7 @@ public class PriceHistoryMapper {
         if (command == null) {
             return null;
         }
-        Stock stockReference = entityManager.getReference(Stock.class, command.ticker());
+        Stock ref = stockReference.getReference(command.ticker());
 
         return PriceHistory.builder()
                 .id(CompoundId.builder()
@@ -46,7 +45,7 @@ public class PriceHistoryMapper {
                         .createdAt(LocalDate.now())
                         .build())
                 .currentPrice(command.currentPrice())
-                .stock(stockReference)
+                .stock(ref)
                 .build();
     }
 
@@ -54,7 +53,7 @@ public class PriceHistoryMapper {
         if (command == null) {
             return null;
         }
-        Stock stockReference = entityManager.getReference(Stock.class, command.ticker());
+        Stock ref = stockReference.getReference(command.ticker());
 
         return PriceHistory.builder()
                 .id(CompoundId.builder()
@@ -64,6 +63,7 @@ public class PriceHistoryMapper {
                 .averagePrice50Days(command.average50Days())
                 .averagePrice100Days(command.average100Days())
                 .averagePrice200Days(command.average200Days())
-                .stock(stockReference)
-                .build();    }
+                .stock(ref)
+                .build();
+    }
 }

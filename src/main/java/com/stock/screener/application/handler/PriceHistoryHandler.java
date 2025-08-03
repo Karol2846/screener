@@ -10,10 +10,7 @@ import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.out.PriceHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -23,9 +20,7 @@ public class PriceHistoryHandler implements DomainEventHandler<CurrentPriceEvent
     private final PriceHistoryMapper priceMapper;
     private final PriceHistoryRepository priceRepository;
 
-    @Async
-    @EventListener
-    @Transactional
+    @Override
     public void handle(CurrentPriceEvent event) {
         CurrentPriceCommand command = event.payload();
         log.info("Updating current price for symbol: {}", command.ticker());

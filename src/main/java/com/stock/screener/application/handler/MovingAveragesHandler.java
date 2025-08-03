@@ -10,10 +10,7 @@ import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -23,9 +20,7 @@ public class MovingAveragesHandler implements DomainEventHandler<MovingAveragesE
     private final PriceHistoryMapper priceMapper;
     private final PriceHistoryRepository priceRepository;
 
-    @Async
-    @EventListener
-    @Transactional
+    @Override
     public void handle(MovingAveragesEvent event) {
         MovingAveragesCommand command = event.payload();
         log.info("Updating moving averages for symbol: {}", command.ticker());

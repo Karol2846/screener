@@ -9,10 +9,7 @@ import com.stock.screener.domain.model.Stock;
 import com.stock.screener.domain.service.StockIdentifierMappingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -23,9 +20,7 @@ public class StockCreationEventHandler implements DomainEventHandler<StockSummar
     private final StockIdentifierMappingService mappingService;
     private final StockMapper stockMapper;
 
-    @Async
-    @EventListener
-    @Transactional
+    @Override
     public void handle(StockSummaryEvent event) {
         StockSummaryCommand summary = event.payload();
 

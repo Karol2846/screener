@@ -1,0 +1,44 @@
+package com.stock.screener.application.handler;
+
+import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
+
+import com.stock.screener.application.event.DomainEventHandler;
+import com.stock.screener.application.event.model.StockSummaryEvent;
+import com.stock.screener.application.port.command.StockSummaryCommand;
+import com.stock.screener.application.port.out.FundamentalDataRepository;
+import com.stock.screener.domain.mapper.FundamentalDataMapper;
+import com.stock.screener.domain.model.FundamentalData;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+public class StockSummaryFundamentalDataHandler implements DomainEventHandler<StockSummaryEvent> {
+
+    private final FundamentalDataMapper mapper;
+    private final FundamentalDataRepository repository;
+
+
+    @Override
+    public void handle(StockSummaryEvent event) {
+        StockSummaryCommand command = event.payload();
+        log.info("Updating fundamental data summary for symbol: {}", command.ticker());
+
+        repository.findById(forSymbolWithActualDate(command.ticker())).ifPresentOrElse(
+                fundamentalData -> updateFundamentalData(fundamentalData, command),
+                () -> createNewFundamentalData(command));
+
+    }
+
+    private void createNewFundamentalData(StockSummaryCommand command) {
+        log.debug("FundamentalData for symbol: {} not found, creating new entity", command.ticker());
+        repository.save(mapper.from(command));
+    }
+
+    private void updateFundamentalData(FundamentalData fundamentalData, StockSummaryCommand command) {
+        log.debug("Updating summary: {} for funtamental data with symbol: {}", command, fundamentalData.getId().getSymbol());
+
+    }
+}

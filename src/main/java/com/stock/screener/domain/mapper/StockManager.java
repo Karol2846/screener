@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class StockReference {
+public class StockManager {
     private final EntityManager entityManager;
 
     public Stock getReference(String symbol) {

@@ -5,7 +5,6 @@ import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.domain.model.Stock;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PriceHistoryMapper {
 
-    private final StockReference stockReference;
+    private final StockManager stockManager;
 
     public void update(PriceHistory priceHistory, CurrentPriceCommand command) {
         if ( command == null ) {
@@ -37,13 +36,10 @@ public class PriceHistoryMapper {
         if (command == null) {
             return null;
         }
-        Stock ref = stockReference.getReference(command.ticker());
+        Stock ref = stockManager.getReference(command.ticker());
 
         return PriceHistory.builder()
-                .id(CompoundId.builder()
-                        .symbol(command.ticker())
-                        .createdAt(LocalDate.now())
-                        .build())
+                .id(CompoundId.forSymbolWithActualDate(command.ticker()))
                 .currentPrice(command.currentPrice())
                 .stock(ref)
                 .build();
@@ -53,13 +49,10 @@ public class PriceHistoryMapper {
         if (command == null) {
             return null;
         }
-        Stock ref = stockReference.getReference(command.ticker());
+        Stock ref = stockManager.getReference(command.ticker());
 
         return PriceHistory.builder()
-                .id(CompoundId.builder()
-                        .symbol(command.ticker())
-                        .createdAt(LocalDate.now())
-                        .build())
+                .id(CompoundId.forSymbolWithActualDate(command.ticker()))
                 .averagePrice50Days(command.average50Days())
                 .averagePrice100Days(command.average100Days())
                 .averagePrice200Days(command.average200Days())

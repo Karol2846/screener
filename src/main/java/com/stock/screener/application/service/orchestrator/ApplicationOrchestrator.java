@@ -2,6 +2,7 @@ package com.stock.screener.application.service.orchestrator;
 
 import com.stock.screener.application.port.out.StockRepository;
 import com.stock.screener.application.service.PriceService;
+import com.stock.screener.application.service.PriceTargetService;
 import com.stock.screener.application.service.StockSummaryService;
 import com.stock.screener.domain.service.StockIdentifierMappingService;
 import com.stock.screener.domain.service.SymbolFileReaderService;
@@ -25,7 +26,7 @@ public class ApplicationOrchestrator {
     private final StockIdentifierMappingService mappingService;
     private final PriceService priceService;
 //    private final AnalystRecommendationService analystRecommendationService;
-//    private final PriceTargetService priceTargetService;
+    private final PriceTargetService priceTargetService;
 
     @Scheduled(cron = "0 0 2 * * ?")
     public void performDailyUpdate() {
@@ -54,7 +55,7 @@ public class ApplicationOrchestrator {
 
         // Monthly updates
         stockSummaryService.processStockSummaries(symbolsFromFile);
-//        priceTargetService.processPriceTargets(symbolsFromFile);
+        priceTargetService.processPriceTargets(symbolsFromFile);
 //        analystRecommendationService.updateAnalystRecommendations(symbolsFromFile);
 
         log.info("Monthly update completed for {} symbols", symbolsFromFile.size());

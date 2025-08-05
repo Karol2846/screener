@@ -5,7 +5,7 @@ import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate
 import com.stock.screener.application.event.DomainEventHandler;
 import com.stock.screener.application.event.model.MovingAveragesEvent;
 import com.stock.screener.application.port.out.PriceHistoryRepository;
-import com.stock.screener.domain.mapper.PriceHistoryMapper;
+import com.stock.screener.domain.factory.PriceHistoryFactory;
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MovingAveragesHandler implements DomainEventHandler<MovingAveragesEvent> {
 
-    private final PriceHistoryMapper priceMapper;
+    private final PriceHistoryFactory factory;
     private final PriceHistoryRepository priceRepository;
 
     @Override
@@ -33,12 +33,12 @@ public class MovingAveragesHandler implements DomainEventHandler<MovingAveragesE
     private void createNewPriceHistory(MovingAveragesCommand command) {
         log.debug("PriceHistory for symbol: {} not found, creating new entity", command.ticker());
 
-        priceRepository.save(priceMapper.from(command));
+        priceRepository.save(factory.from(command));
     }
 
     private void updateMovingAverage(PriceHistory priceHistory, MovingAveragesCommand command) {
         log.debug("Updating moving averages: {} for symbol: {}", command.movingAverages(), command.ticker());
-        priceMapper.update(priceHistory, command);
+        factory.update(priceHistory, command);
         priceRepository.save(priceHistory);
     }
 }

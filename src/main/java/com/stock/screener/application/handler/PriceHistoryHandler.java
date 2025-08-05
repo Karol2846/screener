@@ -5,7 +5,7 @@ import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate
 import com.stock.screener.application.event.DomainEventHandler;
 import com.stock.screener.application.event.model.CurrentPriceEvent;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
-import com.stock.screener.domain.mapper.PriceHistoryMapper;
+import com.stock.screener.domain.factory.PriceHistoryFactory;
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.out.PriceHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PriceHistoryHandler implements DomainEventHandler<CurrentPriceEvent> {
 
-    private final PriceHistoryMapper priceMapper;
+    private final PriceHistoryFactory factory;
     private final PriceHistoryRepository priceRepository;
 
     @Override
@@ -33,12 +33,12 @@ public class PriceHistoryHandler implements DomainEventHandler<CurrentPriceEvent
     private void createNewPriceHistory(CurrentPriceCommand command) {
         log.debug("PriceHistory for symbol: {} not found, creating new entity", command.ticker());
 
-        priceRepository.save(priceMapper.from(command));
+        priceRepository.save(factory.from(command));
     }
 
     private void updateCurrentPrice(PriceHistory priceHistory, CurrentPriceCommand command) {
         log.debug("Updating current price: {} for symbol: {}", command.currentPrice(), command.ticker());
-        priceMapper.update(priceHistory, command);
+        factory.update(priceHistory, command);
         priceRepository.save(priceHistory);
     }
 }

@@ -1,62 +1,30 @@
 package com.stock.screener.domain.mapper;
 
-import com.stock.screener.domain.model.CompoundId;
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
 import com.stock.screener.domain.model.PriceHistory;
 import com.stock.screener.application.port.command.CurrentPriceCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
-import com.stock.screener.domain.model.Stock;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-@RequiredArgsConstructor
-public class PriceHistoryMapper {
+@Mapper(componentModel = SPRING)
+public interface PriceHistoryMapper {
 
-    private final StockManager stockManager;
+    @Mapping(target = "id", ignore = true)
+    void update(@MappingTarget PriceHistory priceHistory, CurrentPriceCommand command);
 
-    public void update(PriceHistory priceHistory, CurrentPriceCommand command) {
-        if ( command == null ) {
-            return;
-        }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "averagePrice50Days", source = "average50Days")
+    @Mapping(target = "averagePrice100Days", source = "average100Days")
+    @Mapping(target = "averagePrice200Days", source = "average200Days")
+    void update(@MappingTarget PriceHistory priceHistory, MovingAveragesCommand command);
 
-        priceHistory.setCurrentPrice(command.currentPrice());
-    }
+    PriceHistory from(CurrentPriceCommand command);
 
-    public void update(PriceHistory priceHistory, MovingAveragesCommand command) {
-        if ( command == null ) {
-            return;
-        }
-
-        priceHistory.setAveragePrice50Days(command.average50Days());
-        priceHistory.setAveragePrice100Days(command.average100Days());
-        priceHistory.setAveragePrice200Days(command.average200Days());
-    }
-
-    public PriceHistory from(CurrentPriceCommand command) {
-        if (command == null) {
-            return null;
-        }
-        Stock ref = stockManager.getReference(command.ticker());
-
-        return PriceHistory.builder()
-                .id(CompoundId.forSymbolWithActualDate(command.ticker()))
-                .currentPrice(command.currentPrice())
-                .stock(ref)
-                .build();
-    }
-
-    public PriceHistory from(MovingAveragesCommand command) {
-        if (command == null) {
-            return null;
-        }
-        Stock ref = stockManager.getReference(command.ticker());
-
-        return PriceHistory.builder()
-                .id(CompoundId.forSymbolWithActualDate(command.ticker()))
-                .averagePrice50Days(command.average50Days())
-                .averagePrice100Days(command.average100Days())
-                .averagePrice200Days(command.average200Days())
-                .stock(ref)
-                .build();
-    }
+    @Mapping(target = "averagePrice50Days", source = "average50Days")
+    @Mapping(target = "averagePrice100Days", source = "average100Days")
+    @Mapping(target = "averagePrice200Days", source = "average200Days")
+    PriceHistory from(MovingAveragesCommand command);
 }

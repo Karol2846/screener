@@ -20,7 +20,6 @@ public class StockSummaryService {
     public void processStockSummaries(List<String> symbols) {
         List<StockSummaryCommand> summaries = seekingAlphaApi.getStockSummaries(symbols);
         log.info("Processing stock summaries: {}", summaries);
-        //TODO: add fundamentalData listener
         summaries.forEach(summary ->
                 eventPublisher.publish(new StockSummaryEvent(summary)));
     }

@@ -13,13 +13,15 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper(
         componentModel = SPRING,
         nullValuePropertyMappingStrategy = IGNORE)
-public abstract class FundamentalDataMapper {
+public interface FundamentalDataMapper {
 
-    public abstract FundamentalData from(StockSummaryCommand stockSummaryCommand);
+    FundamentalData from(StockSummaryCommand stockSummaryCommand);
 
-    @Mapping(target = "id.symbol", ignore = true)
-    public abstract void update(@MappingTarget FundamentalData fundamentalData, StockSummaryCommand stockSummaryCommand);
+    FundamentalData from(PriceTargetCommand stockSummaryCommand);
 
-    @Mapping(target = "id.symbol", ignore = true)
-    public abstract void update(@MappingTarget FundamentalData fundamentalData, PriceTargetCommand priceTargetCommand);
+    @Mapping(target = "id", ignore = true)
+    void update(@MappingTarget FundamentalData fundamentalData, StockSummaryCommand stockSummaryCommand);
+
+    @Mapping(target = "id", ignore = true)
+    void update(@MappingTarget FundamentalData fundamentalData, PriceTargetCommand priceTargetCommand);
 }

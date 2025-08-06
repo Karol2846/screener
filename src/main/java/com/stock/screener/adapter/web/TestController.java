@@ -1,11 +1,10 @@
 package com.stock.screener.adapter.web;
 
-import com.stock.screener.adapter.web.finhub.client.FinHubClient;
 import com.stock.screener.adapter.web.seeking.alpha.client.SeekingAlphaClient;
 import com.stock.screener.adapter.web.seeking.alpha.model.analyst_recomendation.AnalystRecommendationResponse;
 import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingAverageResponse;
-import com.stock.screener.adapter.web.seeking.alpha.model.price_target.PriceTargetResponse;
 import com.stock.screener.application.service.PriceService;
+import com.stock.screener.application.service.PriceTargetService;
 import com.stock.screener.application.service.StockSummaryService;
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final FinHubClient finHubClient;
     private final SeekingAlphaClient seekingAlphaClient;
     private final StockSummaryService stockSummaryService;
+    private final PriceTargetService priceTargetService;
     private final PriceService priceService;
 
     @GetMapping("/price/{symbol}")
@@ -41,8 +40,9 @@ public class TestController {
     }
 
     @GetMapping("/price-taget/{tickers}")
-    public PriceTargetResponse getPriceTarget(@PathVariable String tickers) {
-        return seekingAlphaClient.getPriceTarget(tickers);
+    public void getPriceTarget(@PathVariable String tickers) {
+        var symbolsList = Arrays.stream(tickers.split(",")).toList();
+        priceTargetService.processPriceTargets(symbolsList);
     }
 
     @GetMapping("/analyst-recommendations/{tickers}")

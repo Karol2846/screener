@@ -32,7 +32,7 @@ public class StockSummaryFundamentalDataHandler implements DomainEventHandler<St
     }
 
     private void createNewFundamentalData(StockSummaryCommand command) {
-        log.debug("FundamentalData for symbol: {} not found, creating new entity", command.ticker());
+        log.debug("FundamentalData for symbol: {} not found, creating new entity from stock summary: {}", command.ticker(), command);
         repository.save(factory.from(command));
     }
 

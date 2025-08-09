@@ -5,6 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+@FunctionalInterface
 public interface DomainEventHandler<T extends DomainEvent<?>> {
 
     @Async

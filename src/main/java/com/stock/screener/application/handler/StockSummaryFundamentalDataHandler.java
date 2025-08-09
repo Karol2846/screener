@@ -2,7 +2,6 @@ package com.stock.screener.application.handler;
 
 import static com.stock.screener.domain.model.CompoundId.forSymbolWithActualDate;
 
-import com.stock.screener.application.event.DomainEventHandler;
 import com.stock.screener.application.event.model.StockSummaryEvent;
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import com.stock.screener.application.port.out.FundamentalDataRepository;
@@ -11,18 +10,19 @@ import com.stock.screener.domain.model.FundamentalData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class StockSummaryFundamentalDataHandler implements DomainEventHandler<StockSummaryEvent> {
+public class StockSummaryFundamentalDataHandler {
 
     private final FundamentalDataFactory factory;
     private final FundamentalDataRepository repository;
 
 
-    @Override
-    public void handle(StockSummaryEvent event) {
+    @Transactional
+    public void handleSync(StockSummaryEvent event) {
         StockSummaryCommand command = event.payload();
         log.info("Updating fundamental data summary for symbol: {}", command.ticker());
 

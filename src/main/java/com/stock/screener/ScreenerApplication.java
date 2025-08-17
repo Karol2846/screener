@@ -15,5 +15,3 @@ public class ScreenerApplication {
 	}
 
 }
-//DOCS:
-//  jak się okazało, niektóre spółki mają dane jako null - wtedy wali nullPointery przy mapowaniu (trzeba to jakoś obsłużyć)

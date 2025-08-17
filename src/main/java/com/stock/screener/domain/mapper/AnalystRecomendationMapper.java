@@ -9,6 +9,8 @@ import org.mapstruct.MappingTarget;
 @Mapper
 public interface AnalystRecomendationMapper {
 
+    AnalystRecommendation from(AnalystRecommendationCommand command);
+
     @Mapping(target = "id", ignore = true)
     void update(@MappingTarget AnalystRecommendation recommendation, AnalystRecommendationCommand command);
 }

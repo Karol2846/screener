@@ -1,6 +1,7 @@
 package com.stock.screener.application.service.orchestrator;
 
 import com.stock.screener.application.port.out.StockRepository;
+import com.stock.screener.application.service.AnalystRecommendationService;
 import com.stock.screener.application.service.PriceService;
 import com.stock.screener.application.service.PriceTargetService;
 import com.stock.screener.application.service.StockSummaryService;
@@ -25,7 +26,7 @@ public class ApplicationOrchestrator {
     private final StockSummaryService stockSummaryService;
     private final StockIdentifierMappingService mappingService;
     private final PriceService priceService;
-//    private final AnalystRecommendationService analystRecommendationService;
+    private final AnalystRecommendationService analystRecommendationService;
     private final PriceTargetService priceTargetService;
 
     @Scheduled(cron = "0 0 2 * * ?")
@@ -34,17 +35,12 @@ public class ApplicationOrchestrator {
 
         List<String> symbolsFromFile = fileReader.readSymbolsFromFile();
         List<String> newSymbols = identifyNewSymbols(symbolsFromFile);
+        var symbols = symbolsFromFile.stream()
+                .filter(symbol -> !newSymbols.contains(symbol))
+                .toList();
 
-        // Create new stocks if any
-        if (!newSymbols.isEmpty()) {
-            createNewStocks(newSymbols);
-            mappingService.refreshCache();
-        }
-
-        // Daily updates
-        priceService.processPrice(symbolsFromFile);
-
-        log.info("Daily update completed for {} symbols", symbolsFromFile.size());
+        priceService.processPrice(symbols);
+        log.info("Daily update completed for {} symbols", symbols.size());
     }
 
     @Scheduled(cron = "0 0 1 1 * ?")
@@ -52,11 +48,15 @@ public class ApplicationOrchestrator {
         log.info("Starting monthly update");
 
         List<String> symbolsFromFile = fileReader.readSymbolsFromFile();
+        List<String> newSymbols = identifyNewSymbols(symbolsFromFile);
+        if (!newSymbols.isEmpty()) {
+            createNewStocks(newSymbols);
+            mappingService.refreshCache();
+        }
 
-        // Monthly updates
         stockSummaryService.processStockSummaries(symbolsFromFile);
         priceTargetService.processPriceTargets(symbolsFromFile);
-//        analystRecommendationService.updateAnalystRecommendations(symbolsFromFile);
+        analystRecommendationService.processAnalystRecommendations(symbolsFromFile);
 
         log.info("Monthly update completed for {} symbols", symbolsFromFile.size());
     }

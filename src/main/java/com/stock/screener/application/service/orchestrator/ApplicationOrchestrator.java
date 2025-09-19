@@ -54,6 +54,8 @@ public class ApplicationOrchestrator {
             mappingService.refreshCache();
         }
 
+        //TODO: split all symbols into 4 pieces arrays and process separetly one after another
+
         stockSummaryService.processStockSummaries(symbolsFromFile);
         priceTargetService.processPriceTargets(symbolsFromFile);
         analystRecommendationService.processAnalystRecommendations(symbolsFromFile);

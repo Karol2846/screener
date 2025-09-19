@@ -6,6 +6,7 @@ import com.stock.screener.adapter.web.seeking.alpha.model.moving_average.MovingA
 import com.stock.screener.application.service.PriceService;
 import com.stock.screener.application.service.PriceTargetService;
 import com.stock.screener.application.service.StockSummaryService;
+import com.stock.screener.application.service.orchestrator.ApplicationOrchestrator;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class TestController {
     private final StockSummaryService stockSummaryService;
     private final PriceTargetService priceTargetService;
     private final PriceService priceService;
+    private final ApplicationOrchestrator orchestrator;
 
     @GetMapping("/price/{symbol}")
     public void getCurrentPrice(@PathVariable String symbol) {
@@ -32,6 +34,11 @@ public class TestController {
 
         var symbolsList = Arrays.stream(symbols.split(",")).toList();
         stockSummaryService.processStockSummaries(symbolsList);
+    }
+
+    @GetMapping("/all")
+    public void all() {
+        orchestrator.performMonthlyUpdate();
     }
 
     @GetMapping("/moving-average/{symbols}")

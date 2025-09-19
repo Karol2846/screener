@@ -7,6 +7,7 @@ plugins {
 ext {
 	mapStructVersion = '1.6.3'
 	flywayVersion = '11.3.1'
+    guavaVersion = '33.5.0-jre'
 }
 
 group = 'com.stock'
@@ -35,6 +36,7 @@ dependencies {
 	implementation "org.flywaydb:flyway-core:${flywayVersion}"
 	implementation "org.flywaydb:flyway-database-postgresql:${flywayVersion}"
 	implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+    implementation "com.google.guava:guava:${guavaVersion}"
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'

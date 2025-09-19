@@ -2,5 +2,6 @@ AAPL
 MSFT
 GOOGL
 TSLA
-// NVDA - commented out for test
+NVDA
+SNPS
 META

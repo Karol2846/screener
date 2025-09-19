@@ -19,12 +19,14 @@ public class SymbolFileReaderService {
 
     public List<String> readSymbolsFromFile() {
         try {
-            return Files.readAllLines(Paths.get(symbolsFilePath))
+            var list = Files.readAllLines(Paths.get(symbolsFilePath))
                     .stream()
                     .map(String::trim)
                     .filter(line -> !line.isEmpty())
                     .filter(line -> !line.startsWith("//"))
                     .collect(Collectors.toList());
+            log.info("Symbols file read successfully : {}", list);
+            return list;
         } catch (IOException e) {
             log.error("Failed to read symbols file: {}", symbolsFilePath, e);
             return Collections.emptyList();

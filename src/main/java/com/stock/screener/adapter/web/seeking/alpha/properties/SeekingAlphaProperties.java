@@ -11,5 +11,9 @@ public record SeekingAlphaProperties(
         String baseUrl,
         int maxListSize,
         List<String> momentumFields,
-        boolean groupByMonth) {
+        boolean groupByMonth,
+        String getSummaryEndpoint,
+        String getMovingAverageEndpoint,
+        String getPriceTargetEndpoint,
+        String getAnalystRecomendationEndpoint) {
 }

@@ -5,5 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "finhub")
 public record FinHubProperties(
         String apiKey,
-        String baseUrl) {
+        String baseUrl,
+        String getCurrentPriceEndpoint) {
 }

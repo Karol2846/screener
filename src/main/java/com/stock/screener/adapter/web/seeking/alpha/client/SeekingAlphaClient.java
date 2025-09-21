@@ -23,7 +23,7 @@ public class SeekingAlphaClient {
         log.info("Fetching summary for symbols: [{}]", symbols);
 
         return seekingAlphaWebClient.get()
-                .uri("/get-summary?symbols={symbols}", symbols)
+                .uri(properties.getSummaryEndpoint(), symbols)
                 .retrieve()
                 .bodyToMono(SummaryResponse.class)
                 .block();
@@ -35,7 +35,7 @@ public class SeekingAlphaClient {
         String fields = String.join(",", properties.momentumFields());
 
         return seekingAlphaWebClient.get()
-                .uri("/v2/get-momentum?symbols={symbols}&fields={fields}", symbols, fields)
+                .uri(properties.getMovingAverageEndpoint(), symbols, fields)
                 .retrieve()
                 .bodyToMono(MovingAverageResponse.class)
                 .block();
@@ -46,7 +46,7 @@ public class SeekingAlphaClient {
         log.info("Fetching price target for tickers: [{}]", tickers);
 
         return seekingAlphaWebClient.get()
-                .uri("/get-analyst-price-target?ticker_ids={tickers}&group_by_month={groupByMonth}", tickers, properties.groupByMonth())
+                .uri(properties.getPriceTargetEndpoint(), tickers, properties.groupByMonth())
                 .retrieve()
                 .bodyToMono(PriceTargetResponse.class)
                 .block();
@@ -57,7 +57,7 @@ public class SeekingAlphaClient {
         log.info("Fetching analyst recommendation for tickers: [{}]", tickers);
 
         return seekingAlphaWebClient.get()
-                .uri("/get-analyst-recommendations?ticker_ids={tickers}&group_by_month={groupByMonth}", tickers, properties.groupByMonth())
+                .uri(properties.getAnalystRecomendationEndpoint(), tickers, properties.groupByMonth())
                 .retrieve()
                 .bodyToMono(AnalystRecommendationResponse.class)
                 .block();

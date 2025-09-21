@@ -23,10 +23,16 @@ seeking-alpha:
     - movAvg50d
     - movAvg100d
     - movAvg200d
+  get-summary-endpoint: "/get-summary?symbols={symbols}"
+  get-moving-average-endpoint: "/v2/get-momentum?symbols={symbols}&fields={fields}"
+  get-price-target-endpoint: "/get-analyst-price-target?ticker_ids={tickers}&group_by_month={groupByMonth}"
+  get-analyst-recomendation-endpoint: "/get-analyst-recommendations?ticker_ids={tickers}&group_by_month={groupByMonth}"
+
 
 finhub:
   api-key: ${FINHUB_TOKEN:d1fv3uhr01qk4ao003i0d1fv3uhr01qk4ao003ig}
   base-url: https://finnhub.io/api/v1
+  get-current-price-endpoint: "/quote?symbol={symbol}"
 
 symbols:
   file-path: src/main/resources/static/symbols.txt

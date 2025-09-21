@@ -9,11 +9,11 @@ import org.springframework.web.reactive.function.client.ExchangeFunction;
 import reactor.core.publisher.Mono;
 
 @Component
-public class RateLimitinfFilter implements ExchangeFilterFunction {
+public class RateLimitingFilter implements ExchangeFilterFunction {
 
     private final RateLimiter rateLimiter;
 
-    public RateLimitinfFilter() {
+    public RateLimitingFilter() {
         this.rateLimiter = RateLimiter.create(5);
     }
 

@@ -7,9 +7,11 @@ import com.stock.screener.application.service.PriceTargetService;
 import com.stock.screener.application.service.StockSummaryService;
 import com.stock.screener.domain.service.StockIdentifierMappingService;
 import com.stock.screener.domain.service.SymbolFileReaderService;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,17 +37,13 @@ public class ApplicationOrchestrator {
 
         List<String> symbolsFromFile = fileReader.readSymbolsFromFile();
         List<String> newSymbols = identifyNewSymbols(symbolsFromFile);
-        var symbols = symbolsFromFile.stream()
-                .filter(symbol -> !newSymbols.contains(symbol))
+        var alreasyExistingStocks = symbolsFromFile.stream()
+                .filter(stockNotIn(newSymbols))
                 .toList();
 
+        priceService.processPrice(alreasyExistingStocks);
 
-        for (int i = 0; i < symbolsFromFile.size(); i += 4) {
-            List<String> part = getListPart(symbolsFromFile, i);
-            priceService.processPrice(part);
-        }
-
-        log.info("Daily update completed for {} symbols", symbols.size());
+        log.info("Daily update completed for {} symbols", alreasyExistingStocks.size());
     }
 
     @Scheduled(cron = "0 0 1 1 * ?")
@@ -59,12 +57,9 @@ public class ApplicationOrchestrator {
             mappingService.refreshCache();
         }
 
-        for (int i = 0; i < symbolsFromFile.size(); i += 4) {
-            List<String> part = getListPart(symbolsFromFile, i);
-            stockSummaryService.processStockSummaries(part);
-            priceTargetService.processPriceTargets(part);
-            analystRecommendationService.processAnalystRecommendations(part);
-        }
+        stockSummaryService.processStockSummaries(symbolsFromFile);
+        priceTargetService.processPriceTargets(symbolsFromFile);
+        analystRecommendationService.processAnalystRecommendations(symbolsFromFile);
 
         log.info("Monthly update completed for {} symbols", symbolsFromFile.size());
     }
@@ -73,20 +68,16 @@ public class ApplicationOrchestrator {
         Set<String> existingSymbols = new HashSet<>(stockRepository.findAllSymbols());
 
         return symbolsFromFile.stream()
-                .filter(symbol -> !existingSymbols.contains(symbol))
+                .filter(stockNotIn(existingSymbols))
                 .collect(Collectors.toList());
     }
 
     private void createNewStocks(List<String> newSymbols) {
         log.info("Creating {} new stocks: {}", newSymbols.size(), newSymbols);
-
-        for (int i = 0; i < newSymbols.size(); i += 4) {
-            List<String> part = getListPart(newSymbols, i);
-            stockSummaryService.processStockSummaries(part);
-        }
+            stockSummaryService.processStockSummaries(newSymbols);
     }
 
-    private static List<String> getListPart(List<String> newSymbols, int i) {
-        return newSymbols.subList(i, Math.min(i + 4, newSymbols.size()));
+    private static Predicate<String> stockNotIn(Collection<String> symbols) {
+        return symbol -> !symbols.contains(symbol);
     }
 }

@@ -1,24 +1,20 @@
 package com.stock.screener.adapter.web.seeking.alpha.api;
 
 import com.stock.screener.adapter.web.seeking.alpha.client.SeekingAlphaClient;
-import com.stock.screener.adapter.web.seeking.alpha.model.summary.SummaryResponse;
+import com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper;
 import com.stock.screener.adapter.web.seeking.alpha.properties.SeekingAlphaProperties;
-import com.stock.screener.domain.exception.ListSizeExceededException;
 import com.stock.screener.application.port.command.AnalystRecommendationCommand;
 import com.stock.screener.application.port.command.MovingAveragesCommand;
 import com.stock.screener.application.port.command.PriceTargetCommand;
 import com.stock.screener.application.port.command.StockSummaryCommand;
 import com.stock.screener.application.port.in.api.SeekingAlphaApi;
+import java.util.ArrayList;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper.mapToAnalystRecommendation;
-import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper.mapToMovingAverages;
-import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper.mapToPriceTarget;
-import static com.stock.screener.adapter.web.seeking.alpha.mapper.SeekingAlphaMapper.mapToStockSummary;
 
 @Slf4j
 @Service
@@ -31,44 +27,63 @@ public class SeekingAlphaApiImpl implements SeekingAlphaApi {
 
     @Override
     public List<StockSummaryCommand> getStockSummaries(List<String> symbols) {
-
-        validateListSize(symbols);
-        SummaryResponse summaryResponse = client.getSummary(join(symbols));
-
-        log.info("Get Stock Summary Response: {}", summaryResponse);
-        return mapToStockSummary(summaryResponse);
+        List<StockSummaryCommand> commands = new ArrayList<>();
+        loadStockSummaries(symbols, commands);
+        return commands;
     }
 
     @Override
     public List<MovingAveragesCommand> getMovingAverages(List<String> symbols) {
-
-        validateListSize(symbols);
-        return mapToMovingAverages(client.getMovingAverage(join(symbols)));
+        List<MovingAveragesCommand> commands = new ArrayList<>();
+        loadMovingAverages(symbols, commands);
+        return commands;
     }
 
     @Override
     public List<PriceTargetCommand> getPriceTarget(List<String> tickerIds) {
-
-        validateListSize(tickerIds);
-        return mapToPriceTarget(client.getPriceTarget(join(tickerIds)));
+        List<PriceTargetCommand> commands = new ArrayList<>();
+        loadPriceTargets(tickerIds, commands);
+        return commands;
     }
 
     @Override
     public List<AnalystRecommendationCommand> getAnalystRecommendation(List<String> tickerIds) {
-
-        validateListSize(tickerIds);
-        return mapToAnalystRecommendation(client.getAnalystRecommendation(join(tickerIds)));
+        List<AnalystRecommendationCommand> commands = new ArrayList<>();
+        loadAnalystRecommendations(tickerIds, commands);
+        return commands;
     }
 
+
+    private void loadStockSummaries(List<String> symbols, List<StockSummaryCommand> commands) {
+        loadData(symbols, commands, client::getSummary, SeekingAlphaMapper::mapToStockSummary);
+    }
+
+    private void loadMovingAverages(List<String> symbols, List<MovingAveragesCommand> commands) {
+        loadData(symbols, commands, client::getMovingAverage, SeekingAlphaMapper::mapToMovingAverages);
+    }
+
+    private void loadPriceTargets(List<String> tickers, List<PriceTargetCommand> commands) {
+        loadData(tickers, commands, client::getPriceTarget, SeekingAlphaMapper::mapToPriceTarget);
+    }
+
+    private void loadAnalystRecommendations(List<String> tickers, List<AnalystRecommendationCommand> commands) {
+        loadData(tickers, commands, client::getAnalystRecommendation, SeekingAlphaMapper::mapToAnalystRecommendation);
+    }
+
+    private <T, K> void loadData(List<String> symbols, List<T> commands,
+                                 Function<String, K> client, Function<K, List<T>> mapper) {
+        for (int i = 0; i < symbols.size(); i += properties.maxListSize()) {
+            List<String> part = getListPart(symbols, i);
+            var clientResponse = client.apply(join(part));
+            commands.addAll(mapper.apply(clientResponse));
+        }
+    }
 
     private static String join(List<String> symbols) {
         return String.join(DELIMITER, symbols);
     }
 
-    private void validateListSize(List<String> symbols) {
-        if (symbols.size() > properties.maxListSize()) {
-            throw new ListSizeExceededException("The number of symbols exceeds the maximum allowed size of " +
-                    properties.maxListSize());
-        }
+    private List<String> getListPart(List<String> newSymbols, int i) {
+        return newSymbols.subList(i, Math.min(i + properties.maxListSize(), newSymbols.size()));
     }
 }

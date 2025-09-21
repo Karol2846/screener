@@ -38,7 +38,7 @@ public class TestController {
 
     @GetMapping("/all")
     public void all() {
-        orchestrator.performMonthlyUpdate();
+        orchestrator.performDailyUpdate();
     }
 
     @GetMapping("/moving-average/{symbols}")

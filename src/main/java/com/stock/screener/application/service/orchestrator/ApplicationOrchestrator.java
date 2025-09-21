@@ -39,7 +39,12 @@ public class ApplicationOrchestrator {
                 .filter(symbol -> !newSymbols.contains(symbol))
                 .toList();
 
-        priceService.processPrice(symbols);
+
+        for (int i = 0; i < symbolsFromFile.size(); i += 4) {
+            List<String> part = getListPart(symbolsFromFile, i);
+            priceService.processPrice(part);
+        }
+
         log.info("Daily update completed for {} symbols", symbols.size());
     }
 
@@ -54,11 +59,12 @@ public class ApplicationOrchestrator {
             mappingService.refreshCache();
         }
 
-        //TODO: split all symbols into 4 pieces arrays and process separetly one after another
-
-        stockSummaryService.processStockSummaries(symbolsFromFile);
-        priceTargetService.processPriceTargets(symbolsFromFile);
-        analystRecommendationService.processAnalystRecommendations(symbolsFromFile);
+        for (int i = 0; i < symbolsFromFile.size(); i += 4) {
+            List<String> part = getListPart(symbolsFromFile, i);
+            stockSummaryService.processStockSummaries(part);
+            priceTargetService.processPriceTargets(part);
+            analystRecommendationService.processAnalystRecommendations(part);
+        }
 
         log.info("Monthly update completed for {} symbols", symbolsFromFile.size());
     }
@@ -74,7 +80,13 @@ public class ApplicationOrchestrator {
     private void createNewStocks(List<String> newSymbols) {
         log.info("Creating {} new stocks: {}", newSymbols.size(), newSymbols);
 
-        // Process new stocks via StockSummary to get all required data
-        stockSummaryService.processStockSummaries(newSymbols);
+        for (int i = 0; i < newSymbols.size(); i += 4) {
+            List<String> part = getListPart(newSymbols, i);
+            stockSummaryService.processStockSummaries(part);
+        }
+    }
+
+    private static List<String> getListPart(List<String> newSymbols, int i) {
+        return newSymbols.subList(i, Math.min(i + 4, newSymbols.size()));
     }
 }

@@ -34,8 +34,6 @@ public class SeekingAlphaClient {
 
         String fields = String.join(",", properties.momentumFields());
 
-        log.info("Fields from properties: [{}]", fields);
-
         return seekingAlphaWebClient.get()
                 .uri("/v2/get-momentum?symbols={symbols}&fields={fields}", symbols, fields)
                 .retrieve()

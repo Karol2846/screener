@@ -1,4 +1,4 @@
-package com.stock.screener.adapter.web.config;
+package com.stock.screener.config.web;
 
 import com.stock.screener.adapter.web.finhub.properties.FinHubProperties;
 import com.stock.screener.adapter.web.seeking.alpha.properties.SeekingAlphaProperties;

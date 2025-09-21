@@ -1,4 +1,4 @@
-package com.stock.screener.adapter.event.spring;
+package com.stock.screener.config.event;
 
 import com.stock.screener.application.event.DomainEventPublisher;
 import com.stock.screener.application.event.model.DomainEvent;

@@ -22,7 +22,22 @@ public class SeekingAlphaMapper {
         return summary.data().stream().map(SeekingAlphaMapper::mapToStockSummary).toList();
     }
 
-    public static StockSummaryCommand mapToStockSummary(Summary summary) {
+    public static List<PriceTargetCommand> mapToPriceTarget(PriceTargetResponse priceTarget) {
+        return priceTarget.estimates().entrySet().stream().map(SeekingAlphaMapper::mapToPriceTarget).toList();
+    }
+
+    public static List<AnalystRecommendationCommand> mapToAnalystRecommendation(
+            AnalystRecommendationResponse analystRecommendation) {
+
+        return analystRecommendation.estimates().entrySet().stream()
+                .map(SeekingAlphaMapper::mapToAnalystRecommendation).toList();
+    }
+
+    public static List<MovingAveragesCommand> mapToMovingAverages(MovingAverageResponse movingAverage) {
+        return movingAverage.data().stream().map(SeekingAlphaMapper::mapToMovingAverages).toList();
+    }
+
+    private static StockSummaryCommand mapToStockSummary(Summary summary) {
         var attributes = summary.attributes();
         return StockSummaryCommand.builder()
                 .ticker(summary.id())
@@ -41,13 +56,8 @@ public class SeekingAlphaMapper {
                 .build();
     }
 
-    public static List<MovingAveragesCommand> mapToMovingAverages(MovingAverageResponse movingAverage) {
-        return movingAverage.data().stream().map(SeekingAlphaMapper::mapToMovingAverages).toList();
-    }
-
-    public static MovingAveragesCommand mapToMovingAverages(MovingAverage movingAverage) {
+    private static MovingAveragesCommand mapToMovingAverages(MovingAverage movingAverage) {
         var attributes = movingAverage.attributes();
-
         return MovingAveragesCommand.builder()
                 .ticker(movingAverage.id())
                 .average50Days(attributes.movAvg50d())
@@ -56,11 +66,7 @@ public class SeekingAlphaMapper {
                 .build();
     }
 
-    public static List<PriceTargetCommand> mapToPriceTarget(PriceTargetResponse priceTarget) {
-        return priceTarget.estimates().entrySet().stream().map(SeekingAlphaMapper::mapToPriceTarget).toList();
-    }
-
-    public static PriceTargetCommand mapToPriceTarget(Map.Entry<Integer, PriceTargetData> priceTargetDataEntry) {
+    private static PriceTargetCommand mapToPriceTarget(Map.Entry<Integer, PriceTargetData> priceTargetDataEntry) {
         var priceTargetData = priceTargetDataEntry.getValue();
         return PriceTargetCommand.builder()
                 .tickerId(priceTargetDataEntry.getKey())
@@ -70,16 +76,8 @@ public class SeekingAlphaMapper {
                 .build();
     }
 
-    public static List<AnalystRecommendationCommand> mapToAnalystRecommendation(
-            AnalystRecommendationResponse analystRecommendation) {
-
-        return analystRecommendation.estimates().entrySet().stream()
-                .map(SeekingAlphaMapper::mapToAnalystRecommendation).toList();
-    }
-
-    public static AnalystRecommendationCommand mapToAnalystRecommendation(
+    private static AnalystRecommendationCommand mapToAnalystRecommendation(
             Map.Entry<Integer, AnalystRecommendationsData> analystRecommendationsDataEntry) {
-
         var analystRecommendations = analystRecommendationsDataEntry.getValue();
         return AnalystRecommendationCommand.builder()
                 .tickerId(analystRecommendationsDataEntry.getKey())

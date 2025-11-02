@@ -37,10 +37,10 @@ finhub:
 symbols:
   file-path: src/main/resources/static/symbols.txt
 
-logging:
-  level:
-    com:
-      stock:
-        screener:
-          application:
-            handler: DEBUG
+#logging:
+#  level:
+#    com:
+#      stock:
+#        screener:
+#          application:
+#            handler: DEBUG

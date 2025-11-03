@@ -1,7 +1,7 @@
 AAPL
-MSFT
-GOOGL
-TSLA
+MO
+AVGO
 NVDA
-SNPS
-META
+AMZN
+
+// TODO: idk why, but when file change at runtime - new stocks are not loaded

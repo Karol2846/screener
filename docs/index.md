@@ -10,3 +10,7 @@
 ---
 
 **[MODEL SCORINGOWY](model_scoringowy.md)**
+
+---
+
+**[ZARZĄDZANIE PORTFELEM](zarzadzanie_portfelem.md)**

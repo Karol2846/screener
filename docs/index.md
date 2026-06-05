@@ -8,3 +8,5 @@
 **[NAJWAŻNIEJSZY WSKAŹNIK](najwazniejszy_wskaznik.md)**
  
 ---
+
+**[MODEL SCORINGOWY](model_scoringowy.md)**

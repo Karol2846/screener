@@ -1,0 +1,46 @@
+{
+  "quoteSummary": {
+    "result": [
+      {
+        "recommendationTrend": {
+          "trend": [
+            {
+              "period": "0m",
+              "strongBuy": 5,
+              "buy": 12,
+              "hold": 2,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-1m",
+              "strongBuy": 5,
+              "buy": 12,
+              "hold": 2,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-2m",
+              "strongBuy": 5,
+              "buy": 12,
+              "hold": 2,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-3m",
+              "strongBuy": 6,
+              "buy": 12,
+              "hold": 1,
+              "sell": 0,
+              "strongSell": 0
+            }
+          ],
+          "maxAge": 86400
+        }
+      }
+    ],
+    "error": null
+  }
+}
